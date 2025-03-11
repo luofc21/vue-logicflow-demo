@@ -1,0 +1,68 @@
+<bpmn:definitions id="Definitions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" targetNamespace="http://logic-flow.org" exporter="logicflow" exporterVersion="1.2.10">	
+  <bpmn:process isExecutable="true" id="Process">	
+      <bpmn:startEvent id="Event_d61552f" name="开始" width="36" height="36">	
+          <bpmn:outgoing>Flow_8c25f6c</bpmn:outgoing>	
+      </bpmn:startEvent>	
+      <bpmn:userTask id="Activity_1c99c58" name="审批" action="approve" width="100" height="80">	
+          <bpmn:incoming>Flow_8c25f6c</bpmn:incoming>	
+          <bpmn:outgoing>Flow_64a0bfe</bpmn:outgoing>	
+      </bpmn:userTask>	
+      <bpmn:serviceTask id="Activity_6e1f94a" name="服务任务" url="http://www.baidu.com" width="100" height="80">	
+        <params stage="stage1" stageName="阶段1" />	
+          <bpmn:incoming>Flow_64a0bfe</bpmn:incoming>	
+          <bpmn:outgoing>Flow_508f9f5</bpmn:outgoing>	
+      </bpmn:serviceTask>	
+      <bpmn:endEvent id="Event_5b82118" name="结束" width="36" height="36">	
+          <bpmn:incoming>Flow_508f9f5</bpmn:incoming>	
+      </bpmn:endEvent>	
+      <bpmn:sequenceFlow id="Flow_8c25f6c" sourceRef="Event_d61552f" targetRef="Activity_1c99c58" isDefaultFlow="false" />	
+      <bpmn:sequenceFlow id="Flow_64a0bfe" sourceRef="Activity_1c99c58" targetRef="Activity_6e1f94a" isDefaultFlow="false" />	
+      <bpmn:sequenceFlow id="Flow_508f9f5" sourceRef="Activity_6e1f94a" targetRef="Event_5b82118" isDefaultFlow="false" />	
+  </bpmn:process>	
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">	
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process">	
+        <bpmndi:BPMNEdge id="Flow_8c25f6c_di" bpmnElement="Flow_8c25f6c">	
+            <di:waypoint x="386" y="304" />	
+            <di:waypoint x="447" y="304" />	
+            <di:waypoint x="447" y="301" />	
+            <di:waypoint x="508" y="301" />	
+        </bpmndi:BPMNEdge>	
+        <bpmndi:BPMNEdge id="Flow_64a0bfe_di" bpmnElement="Flow_64a0bfe">	
+            <di:waypoint x="608" y="301" />	
+            <di:waypoint x="713" y="301" />	
+            <di:waypoint x="713" y="290" />	
+            <di:waypoint x="818" y="290" />	
+        </bpmndi:BPMNEdge>	
+        <bpmndi:BPMNEdge id="Flow_508f9f5_di" bpmnElement="Flow_508f9f5">	
+            <di:waypoint x="918" y="290" />	
+            <di:waypoint x="1017" y="290" />	
+            <di:waypoint x="1017" y="287" />	
+            <di:waypoint x="1116" y="287" />	
+        </bpmndi:BPMNEdge>	
+        <bpmndi:BPMNShape id="Event_d61552f_di" bpmnElement="Event_d61552f">	
+          <dc:Bounds x="348" y="284" width="40" height="40" />	
+          <bpmndi:BPMNLabel>	
+            <dc:Bounds x="358" y="337" width="20" height="14" />	
+          </bpmndi:BPMNLabel>	
+        </bpmndi:BPMNShape>	
+        <bpmndi:BPMNShape id="Activity_1c99c58_di" bpmnElement="Activity_1c99c58">	
+          <dc:Bounds x="508" y="261" width="100" height="80" />	
+          <bpmndi:BPMNLabel>	
+            <dc:Bounds x="538" y="294" width="40" height="14" />	
+          </bpmndi:BPMNLabel>	
+        </bpmndi:BPMNShape>	
+        <bpmndi:BPMNShape id="Activity_6e1f94a_di" bpmnElement="Activity_6e1f94a">	
+          <dc:Bounds x="818" y="250" width="100" height="80" />	
+          <bpmndi:BPMNLabel>	
+            <dc:Bounds x="848" y="283" width="40" height="14" />	
+          </bpmndi:BPMNLabel>	
+        </bpmndi:BPMNShape>	
+        <bpmndi:BPMNShape id="Event_5b82118_di" bpmnElement="Event_5b82118">	
+          <dc:Bounds x="1114" y="267" width="40" height="40" />	
+          <bpmndi:BPMNLabel>	
+            <dc:Bounds x="1124" y="320" width="20" height="14" />	
+          </bpmndi:BPMNLabel>	
+        </bpmndi:BPMNShape>	
+    </bpmndi:BPMNPlane>	
+  </bpmndi:BPMNDiagram>	
+</bpmn:definitions>
