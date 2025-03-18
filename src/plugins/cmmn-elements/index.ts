@@ -19,6 +19,7 @@ export const CmmnElementsType = {
   PROCESS_TASK: 'cmmn:processTask',
   MILESTONE: 'cmmn:milestone',
   EVENT_LISTENER: 'cmmn:eventListener',
+  STAGE: 'cmmn:stage',  // 添加 stage 类型
   CONNECTOR: 'cmmn:planItemOnPart',
   ENTRY_CRITERION: 'cmmn:entryCriterion',
   EXIT_CRITERION: 'cmmn:exitCriterion'

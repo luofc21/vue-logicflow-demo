@@ -1,0 +1,50 @@
+<bpmn:definitions id="Definitions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" targetNamespace="http://logic-flow.org" exporter="logicflow" exporterVersion="1.2.10">	
+  <bpmn:process isExecutable="true" id="Process">	
+      <bpmn:startEvent id="Event_4c3d8c2" name="开始" width="36" height="36">	
+          <bpmn:outgoing>Flow_7c759a5</bpmn:outgoing>	
+      </bpmn:startEvent>	
+      <bpmn:userTask id="Activity_b0494ab" name="人工任务" width="100" height="80">	
+          <bpmn:incoming>Flow_7c759a5</bpmn:incoming>	
+          <bpmn:outgoing>Flow_15b76d1</bpmn:outgoing>	
+      </bpmn:userTask>	
+      <bpmn:endEvent id="Event_262df39" name="结束" width="36" height="36">	
+          <bpmn:incoming>Flow_15b76d1</bpmn:incoming>	
+      </bpmn:endEvent>	
+      <bpmn:sequenceFlow id="Flow_7c759a5" sourceRef="Event_4c3d8c2" targetRef="Activity_b0494ab" isDefaultFlow="false" />	
+      <bpmn:sequenceFlow id="Flow_15b76d1" sourceRef="Activity_b0494ab" targetRef="Event_262df39" isDefaultFlow="false" />	
+  </bpmn:process>	
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">	
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process">	
+        <bpmndi:BPMNEdge id="Flow_7c759a5_di" bpmnElement="Flow_7c759a5">	
+            <di:waypoint x="306" y="320" />	
+            <di:waypoint x="356.5" y="320" />	
+            <di:waypoint x="356.5" y="327" />	
+            <di:waypoint x="407" y="327" />	
+        </bpmndi:BPMNEdge>	
+        <bpmndi:BPMNEdge id="Flow_15b76d1_di" bpmnElement="Flow_15b76d1">	
+            <di:waypoint x="507" y="327" />	
+            <di:waypoint x="600" y="327" />	
+            <di:waypoint x="600" y="319" />	
+            <di:waypoint x="693" y="319" />	
+        </bpmndi:BPMNEdge>	
+        <bpmndi:BPMNShape id="Event_4c3d8c2_di" bpmnElement="Event_4c3d8c2">	
+          <dc:Bounds x="268" y="300" width="40" height="40" />	
+          <bpmndi:BPMNLabel>	
+            <dc:Bounds x="278" y="353" width="20" height="14" />	
+          </bpmndi:BPMNLabel>	
+        </bpmndi:BPMNShape>	
+        <bpmndi:BPMNShape id="Activity_b0494ab_di" bpmnElement="Activity_b0494ab">	
+          <dc:Bounds x="407" y="287" width="100" height="80" />	
+          <bpmndi:BPMNLabel>	
+            <dc:Bounds x="437" y="320" width="40" height="14" />	
+          </bpmndi:BPMNLabel>	
+        </bpmndi:BPMNShape>	
+        <bpmndi:BPMNShape id="Event_262df39_di" bpmnElement="Event_262df39">	
+          <dc:Bounds x="691" y="299" width="40" height="40" />	
+          <bpmndi:BPMNLabel>	
+            <dc:Bounds x="701" y="352" width="20" height="14" />	
+          </bpmndi:BPMNLabel>	
+        </bpmndi:BPMNShape>	
+    </bpmndi:BPMNPlane>	
+  </bpmndi:BPMNDiagram>	
+</bpmn:definitions>

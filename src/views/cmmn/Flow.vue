@@ -3,12 +3,10 @@
     <!-- 辅助工具栏 -->
     <Control class="control" v-if="lf" :lf="lf" v-model:readOnly="readOnly" @executePlan="executePlan" />
     <div class="node-panel">
-      <NodePanel :lf="lf" />
-    </div>
-    <div id="graph" class="viewport" />
-    <div class="cmmn-panel">
+      <!-- <NodePanel :lf="lf" /> -->
       <cmmn-node-panel :lf="lf" />
     </div>
+    <div id="graph" class="viewport" />
     <!-- 属性面板 -->
     <div v-if="showPlanPanel">
       <PlanPropertyPanel :nodeData="nodeData" @updateProperty="updatePlanProperty"
@@ -32,27 +30,21 @@
 import { ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import LogicFlow from '@logicflow/core';
-import PropertyPanel from './components/property.vue';
-import PlanPropertyPanel from './components/plan-property.vue';
-import JudgementPanel from './components/judgement-panel.vue';
-import NodePanel from './components/node-panel.vue';
-import Control from './components/control.vue';
-import RegistryNode from './components/registerNode';
-import RegistryMenu from './components/registerMenu';
-import { themeApprove } from './config';
-import './style/index.css';
+import PropertyPanel from '@components/property.vue';
+import PlanPropertyPanel from '@components/plan-property.vue';
+import JudgementPanel from '@components/judgement-panel.vue';
+// import NodePanel from '@components/node-panel.vue';
+import Control from '@components/control.vue';
+import RegistryNode from '@components/registerNode';
+import RegistryMenu from '@components/registerMenu';
+import { themeApprove } from '@/config';
+import '@/style/index.css';
 import '@logicflow/core/dist/index.css';
-// import { BpmnXmlAdapter } from "@logicflow/extension";
-// import BpmnExporter from './utils/bpmn-export';
-import { BPMNElements } from "./plugin/bpmn-elements";
-import { BPMNAdapter } from "./plugin/bpmn-elements-adapter";
-import CmmnProperty from './components/cmmn-property.vue'
-import CmmnNodePanel from './components/cmmn-node-panel.vue'
-import { CmmnElements } from "./plugin/cmmn-elements";
-import { CmmnAdapter } from "./plugin/cmmn-elements-adapter";
+// import CmmnProperty from '@components/cmmn-property.vue'
+import CmmnNodePanel from '@components/cmmn-node-panel.vue'
+import { CmmnElements } from "@plugins/cmmn-elements";
+import { CmmnAdapter } from "@plugins/cmmn-elements-adapter";
 
-LogicFlow.use(BPMNElements);
-LogicFlow.use(BPMNAdapter);
 LogicFlow.use(CmmnElements);
 LogicFlow.use(CmmnAdapter);
 

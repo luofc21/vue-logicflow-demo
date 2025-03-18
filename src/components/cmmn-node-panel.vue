@@ -5,7 +5,7 @@
             <div class="node-item" v-for="(item, index) in nodeList" :key="index"
                 @mousedown="addNode(item.type, { text: item.label })">
                 <div class="node-item-icon">
-                    <component :is="item.icon" />
+                    <SvgIcon :iconClass="item.icon" />
                 </div>
                 <div class="node-item-label">{{ item.label }}</div>
             </div>
@@ -14,15 +14,16 @@
 </template>
 
 <script setup lang="ts">
-import { UserFilled, Flag, Bell, Document } from '@element-plus/icons-vue'
+import SvgIcon from './SvgIcon.vue';
 
 const props = defineProps({
     lf: Object
 })
 
 const nodeList = [
-    { type: 'cmmn:humanTask', label: '人工任务', icon: UserFilled },
-    { type: 'cmmn:caseTask', label: '案例任务', icon: Document },
+    { type: 'cmmn:humanTask', label: '人工任务', icon: 'bpmn-icon-user-task' },
+    { type: 'cmmn:caseTask', label: '案例任务', icon: 'bpmn-icon-service-task' },
+    { type: 'cmmn:stage', label: '阶段', icon: 'bpmn-icon-subprocess-expanded' },
     // { type: 'Milestone', label: '里程碑', icon: Flag },
     // { type: 'EventListener', label: '事件监听', icon: Bell },
     // { type: 'EntryCriterion', label: '入口条件', icon: 'Entry' },
@@ -61,11 +62,13 @@ function addNode(type: string, { text, properties }: any) {
 
 .node-item {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 8px;
     cursor: move;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    /* border: 1px solid #ddd; */
+    /* border-radius: 4px; */
 }
 
 .node-item:hover {
@@ -73,6 +76,12 @@ function addNode(type: string, { text, properties }: any) {
 }
 
 .node-item-icon {
-    margin-right: 8px;
+    /* margin-right: 8px; */
+    margin-bottom: 4px;
+}
+
+.node-item-label {
+    font-size: 12px;
+
 }
 </style>

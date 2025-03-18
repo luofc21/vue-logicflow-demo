@@ -12,6 +12,7 @@ import {
   casePlanModelIcon
  } from '../icons';
 import { TaskNodeFactory } from './task';
+import { Stage } from '../Stage';
 // import { SubProcessFactory } from './subProcess';
 
 function boundaryEvent(lf: any) {
@@ -130,5 +131,7 @@ export function registerTaskNodes(lf: LogicFlow) {
   lf.register(EntryCriterion);
   lf.register(ExitCriterion);
   lf.register(CasePlanModel);
+  const stage = Stage;
+  lf.register(stage);
   boundaryEvent(lf);
 }

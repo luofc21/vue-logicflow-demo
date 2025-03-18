@@ -25,9 +25,8 @@
         "></SvgIcon>
       <div class="node-name">时间边界</div>
       <SvgIcon iconClass="bpmn-icon-start-event-message" @mousedown.native="addMessageNode" />
-      <div class="node-name">消息开始时间</div>
-      <SvgIcon iconClass="bpmn-icon-end-event-none" @mousedown.native="addEndNode" /> -->
-
+      <div class="node-name">消息开始时间</div> -->
+      <SvgIcon iconClass="bpmn-icon-end-event-none" @mousedown.native="addEndNode" />
       <div class="node-name">结束</div>
       <SvgIcon iconClass="bpmn-icon-gateway-or" @mousedown.native="
         addNode('bpmn:inclusiveGateway', { text: '包容网关' })

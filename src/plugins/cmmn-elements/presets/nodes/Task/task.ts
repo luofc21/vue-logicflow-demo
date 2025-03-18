@@ -6,14 +6,14 @@ import {
   RectNodeModel,
   h,
 } from '@logicflow/core';
-import { parallelMarker, sequentialMarker, loopMarker } from '../icons';
+// import { parallelMarker, sequentialMarker, loopMarker } from '../icons';
 import { genBpmnId, groupRule } from '../../../utils';
 
-export const multiInstanceIcon: any = {
-  parallel: parallelMarker,
-  sequential: sequentialMarker,
-  loop: loopMarker,
-};
+// export const multiInstanceIcon: any = {
+//   parallel: parallelMarker,
+//   sequential: sequentialMarker,
+//   loop: loopMarker,
+// };
 
 type TaskType = {
   multiInstanceType: string;
@@ -89,7 +89,7 @@ export function TaskNodeFactory(type: string, icon: string | any[], props?: any)
             strokeLinejoin: 'round',
             stroke: 'rgb(34, 36, 42)',
             strokeWidth: '2',
-            d: multiInstanceIcon[properties.multiInstanceType] || '',
+            d: '',
           }),
         ),
       ]);
