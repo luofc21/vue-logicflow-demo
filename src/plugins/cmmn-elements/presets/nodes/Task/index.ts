@@ -108,6 +108,13 @@ function boundaryEvent(lf: any) {
   }
 }
 
+// 将图标对象转换为字符串
+const userTaskIconStr = 'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z';
+const milestoneIconStr = 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z';
+const processTaskIconStr = 'M5 5h14v14H5V5z M6 12h12';
+const caseTaskIconStr = 'M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-2 16c-2.05 0-3.71-1.67-3.71-3.71s1.67-3.71 3.71-3.71 3.71 1.67 3.71 3.71-1.67 3.71-3.71 3.71z';
+const stageIconStr = 'M3 3h18v18H3V3z M6 6h12M6 12h12M6 18h12';
+
 export function registerTaskNodes(lf: LogicFlow) {
   // const ServiceTask = TaskNodeFactory('bpmn:serviceTask', serviceTaskIcon);
   // const UserTask = TaskNodeFactory('bpmn:userTask', userTaskIcon);
@@ -115,23 +122,25 @@ export function registerTaskNodes(lf: LogicFlow) {
   // lf.register(ServiceTask);
   // lf.register(UserTask);
   // lf.register(SubProcessFactory());
-  const CaseTask = TaskNodeFactory('cmmn:caseTask', serviceTaskIcon);
+
+
+  // const CaseTask = TaskNodeFactory('cmmn:caseTask', serviceTaskIcon);
   const HumanTask = TaskNodeFactory('cmmn:humanTask', userTaskIcon);
-  const ProcessTask = TaskNodeFactory('cmmn:processTask', processTaskIcon);
+  // const ProcessTask = TaskNodeFactory('cmmn:processTask', processTaskIcon);
   const Milestone = TaskNodeFactory('cmmn:milestone', milestoneIcon);
-  const EventListener = TaskNodeFactory('cmmn:eventListener', eventListenerIcon);
-  const EntryCriterion = TaskNodeFactory('cmmn:entryCriterion', entryCriterionIcon);
-  const ExitCriterion = TaskNodeFactory('cmmn:exitCriterion', exitCriterionIcon);
-  const CasePlanModel = TaskNodeFactory('cmmn:casePlanModel', casePlanModelIcon);
-  lf.register(CaseTask);
+  // const EventListener = TaskNodeFactory('cmmn:eventListener', eventListenerIcon);
+  // const EntryCriterion = TaskNodeFactory('cmmn:entryCriterion', entryCriterionIcon);
+  // const ExitCriterion = TaskNodeFactory('cmmn:exitCriterion', exitCriterionIcon);
+  // const CasePlanModel = TaskNodeFactory('cmmn:casePlanModel', casePlanModelIcon);
+  // lf.register(CaseTask);
   lf.register(HumanTask);
-  lf.register(ProcessTask);
+  // lf.register(ProcessTask);
   lf.register(Milestone);
-  lf.register(EventListener);
-  lf.register(EntryCriterion);
-  lf.register(ExitCriterion);
-  lf.register(CasePlanModel);
-  const stage = Stage;
-  lf.register(stage);
+  // lf.register(EventListener);
+  // lf.register(EntryCriterion);
+  // lf.register(ExitCriterion);
+  // lf.register(CasePlanModel);
+  // const stage = Stage;
+  // lf.register(stage);
   boundaryEvent(lf);
 }

@@ -1,14 +1,15 @@
 // import { App } from '@logicflow/core'
-import { CaseTask } from './presets/nodes/Task/CaseTask'
-import { HumanTask } from './presets/nodes/HumanTask'
+// import { CaseTask } from './presets/nodes/Task/CaseTask'
+// import { HumanTask } from './presets/nodes/HumanTask'
 // import { ProcessTask } from './presets/nodes/ProcessTask'
 // import { Milestone } from './presets/nodes/Milestone'
 // import { EventListener } from './presets/nodes/EventListener'
 // import { CasePlanModel } from './presets/nodes/CasePlanModel'
-import { CmmnConnection } from './presets/edges/CmmnConnection'
-import { EntryCriterion } from './presets/nodes/EntryCriterion'
-import { ExitCriterion } from './presets/nodes/ExitCriterion'
+// import { CmmnConnection } from './presets/edges/CmmnConnection'
+// import { EntryCriterion } from './presets/nodes/EntryCriterion'
+// import { ExitCriterion } from './presets/nodes/ExitCriterion'
 import { registerTaskNodes } from './presets/nodes/Task';
+import { registerStageNodes } from './presets/nodes/Stage/index';
 import { registerEdge } from './presets/edges';
 
 // CMMN规范中的节点类型枚举
@@ -30,6 +31,7 @@ export class CmmnElements {
 
   constructor({ lf }: any) {
     registerTaskNodes(lf);
+    registerStageNodes(lf);
     registerEdge(lf);
   }
 }

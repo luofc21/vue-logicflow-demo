@@ -1,10 +1,10 @@
 <template>
   <div class="approve-container">
     <!-- 辅助工具栏 -->
-    <Control class="control" v-if="lf" :lf="lf" v-model:readOnly="readOnly" @executePlan="executePlan" />
+    <CmmnControl class="control" v-if="lf" :lf="lf" v-model:readOnly="readOnly" @executePlan="executePlan" />
     <div class="node-panel">
       <!-- <NodePanel :lf="lf" /> -->
-      <cmmn-node-panel :lf="lf" />
+      <CmmnNodePanel :lf="lf" />
     </div>
     <div id="graph" class="viewport" />
     <!-- 属性面板 -->
@@ -19,39 +19,38 @@
     <div v-if="showJudgementPanel">
       <JudgementPanel :nodeData="nodeData" @updateProperty="updateProperty" @hidePropertyPanel="hideJudgementPanel" />
     </div>
-    <div class="flow-container">
-      <div id="flow"></div>
-      <cmmn-property v-if="showPropertyPanel" :nodeData="selectedNode" @hidePropertyPanel="hidePropertyPanel"
-        @updateProperty="updateNodeProperty" />
-    </div>
+    <CmmnProperty v-model:visible="showPropertyPanel" :nodeData="currentNode" @hidePropertyPanel="hidePropertyPanel"
+      @updateProperty="handleSave" />
   </div>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import LogicFlow from '@logicflow/core';
+import { DynamicGroup } from '@logicflow/extension';
 import PropertyPanel from '@components/property.vue';
 import PlanPropertyPanel from '@components/plan-property.vue';
 import JudgementPanel from '@components/judgement-panel.vue';
-// import NodePanel from '@components/node-panel.vue';
-import Control from '@components/control.vue';
-import RegistryNode from '@components/registerNode';
-import RegistryMenu from '@components/registerMenu';
 import { themeApprove } from '@/config';
 import '@/style/index.css';
 import '@logicflow/core/dist/index.css';
 // import CmmnProperty from '@components/cmmn-property.vue'
 import CmmnNodePanel from '@components/cmmn-node-panel.vue'
+import CmmnControl from '@components/cmmn-control.vue';
+import CmmnProperty from '@components/cmmn-property.vue';
 import { CmmnElements } from "@plugins/cmmn-elements";
 import { CmmnAdapter } from "@plugins/cmmn-elements-adapter";
+// import { StageGroupPlugin } from '../../plugins/cmmn-elements/StageGroupPlugin';
 
 LogicFlow.use(CmmnElements);
 LogicFlow.use(CmmnAdapter);
+LogicFlow.use(DynamicGroup);
+// LogicFlow.use(StageGroupPlugin);
 
 const config = {
   stopScrollGraph: true,
   stopZoomGraph: true,
-  // allowResize: true,
+  allowResize: true, // 节点可调整大小（如Stage节点）
   // allowRotate: true,
   grid: {
     size: 10,
@@ -74,7 +73,11 @@ const showPlanPanel = ref(false);
 const readOnly = ref(false);
 const showJudgementPanel = ref(false);
 const showPropertyPanel = ref(false)
-const selectedNode = ref(null)
+const drawerVisible = ref(false)
+const editForm = ref({
+  name: ''
+})
+const currentNode = ref(null)
 
 const initEvent = (lf) => {
   lf.on('element:click', ({ data }) => {
@@ -98,25 +101,33 @@ const initEvent = (lf) => {
   });
 
   lf.on('node:dnd-add', (data) => {
-    const graphData = lf.getGraphData(); // 使用bpmn插件时输出的是xml格式数据
-    // console.log(graphData);
-    const nodes = graphData.nodes;
-    // console.log(nodes);
-    const hasStart = false; // nodes.filter(k => k.flow_type === 'start').length > 1;
-    const hasEnd = false; // nodes.filter(k => k.flow_type === 'end').length > 1;
-    if (hasStart) {
-      ElMessage.error('只能有一个开始节点');
-      setTimeout(() => {
-        lf.undo();
-      }, 200);
-    }
-    if (hasEnd) {
-      ElMessage.error('只能有一个结束节点');
-      setTimeout(() => {
-        lf.undo();
-      }, 200);
-    }
+    // const graphData = lf.getGraphData(); // 使用bpmn插件时输出的是xml格式数据
+    // // console.log(graphData);
+    // const nodes = graphData.nodes;
+    // // console.log(nodes);
+    // const hasStart = false; // nodes.filter(k => k.flow_type === 'start').length > 1;
+    // const hasEnd = false; // nodes.filter(k => k.flow_type === 'end').length > 1;
+    // if (hasStart) {
+    //   ElMessage.error('只能有一个开始节点');
+    //   setTimeout(() => {
+    //     lf.undo();
+    //   }, 200);
+    // }
+    // if (hasEnd) {
+    //   ElMessage.error('只能有一个结束节点');
+    //   setTimeout(() => {
+    //     lf.undo();
+    //   }, 200);
+    // }
   });
+
+  // 监听stage:edit事件
+  lf.on('stage:edit', ({ nodeId, nodeData }) => {
+    currentNode.value = lf.getNodeModelById(nodeId);
+    console.log('event edit ===>', nodeId, nodeData, currentNode.value);
+    // editForm.value.name = nodeData.text?.value || '';
+    showPropertyPanel.value = true;
+  })
 };
 
 const updatePlanProperty = (id, data) => {
@@ -161,7 +172,7 @@ const hidePlanPropertyPanel = () => {
 const hidePropertyPanel = () => {
   showCommonPanel.value = false;
   showPropertyPanel.value = false
-  selectedNode.value = null
+  currentNode.value = null
 };
 
 const hideJudgementPanel = () => {
@@ -169,42 +180,42 @@ const hideJudgementPanel = () => {
 };
 
 const updateNodeProperty = (data) => {
-  lf.value.updateProperties(selectedNode.value.id, data)
+  lf.value.updateProperties(currentNode.value.id, data)
 }
 
-const initDefaultCmmnProcess = () => {
-  const data = {
-    nodes: [
-      {
-        id: 'task1',
-        type: 'HumanTask',
-        x: 200,
-        y: 200,
-        text: { value: '审核申请' },
-        properties: {}
-      },
-      {
-        id: 'milestone1',
-        type: 'Milestone',
-        x: 400,
-        y: 200,
-        text: { value: '审核完成' },
-        properties: {}
-      }
-    ],
-    edges: [
-      {
-        id: 'edge1',
-        type: 'CmmnConnection',
-        sourceNodeId: 'task1',
-        targetNodeId: 'milestone1',
-        text: { value: '' },
-        properties: {}
-      }
-    ]
-  }
-  lf.value.render(data)
-}
+// const initDefaultCmmnProcess = () => {
+//   const data = {
+//     nodes: [
+//       {
+//         id: 'task1',
+//         type: 'HumanTask',
+//         x: 200,
+//         y: 200,
+//         text: { value: '审核申请' },
+//         properties: {}
+//       },
+//       {
+//         id: 'milestone1',
+//         type: 'Milestone',
+//         x: 400,
+//         y: 200,
+//         text: { value: '审核完成' },
+//         properties: {}
+//       }
+//     ],
+//     edges: [
+//       {
+//         id: 'edge1',
+//         type: 'CmmnConnection',
+//         sourceNodeId: 'task1',
+//         targetNodeId: 'milestone1',
+//         text: { value: '' },
+//         properties: {}
+//       }
+//     ]
+//   }
+//   lf.value.render(data)
+// }
 
 onMounted(() => {
   const logicFlow = new LogicFlow({
@@ -212,17 +223,25 @@ onMounted(() => {
     container: document.querySelector('#graph')
   });
   lf.value = logicFlow;
-  RegistryNode(logicFlow);
-  RegistryMenu(logicFlow);
   initEvent(logicFlow);
   logicFlow.render({});
-  lf.value.on('node:click', handleNodeClick)
-  initDefaultCmmnProcess()
+  // lf.value.on('node:click', handleNodeClick)
+  // initDefaultCmmnProcess()
 });
 
-const handleNodeClick = (data) => {
-  selectedNode.value = data
-  showPropertyPanel.value = true
+// const handleNodeClick = (data) => {
+//   console.log('handleNodeClick', data)
+//   currentNode.value = data
+//   showPropertyPanel.value = true
+// }
+
+// 保存节点属性
+const handleSave = (newNodeData) => {
+  if (currentNode.value && !!newNodeData.text.value) {
+    lf.value.setProperties(currentNode.value.id, {
+      text: {...currentNode.value.text, value: newNodeData.text.vlaue}
+    })
+  }
 }
 </script>
 

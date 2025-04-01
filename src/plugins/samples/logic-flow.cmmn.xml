@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cmmn:definitions xmlns:cmmn="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cmmndi="http://www.omg.org/spec/CMMN/20151109/CMMNDI" xmlns:dc="http://www.omg.org/spec/CMMN/20151109/DC" xmlns:di="http://www.omg.org/spec/CMMN/20151109/DI" targetNamespace="http://www.flowable.org/casedef">	
+  <cmmn:case id="Case_1743498261050" name="CMMN Case">	
+    <cmmn:casePlanModel id="CasePlanModel_1743498261051">	
+        <cmmn:planItem id="PlanItem_2713307c-b87a-44a4-b982-71fc54f02c7b" definitionRef="Definition_2713307c-b87a-44a4-b982-71fc54f02c7b" />	
+        <cmmn:stage id="Definition_2713307c-b87a-44a4-b982-71fc54f02c7b" name="阶段2" type="cmmn:stage" width="400" height="230" children="['Activity_c2cae44','Activity_0b434fb']" isCollapsed="false" definitionId="Definition_2713307c-b87a-44a4-b982-71fc54f02c7b">	
+            <cmmn:planItem id="PlanItem_Activity_c2cae44" definitionRef="Definition_Activity_c2cae44" />	
+            <cmmn:planItem id="PlanItem_Activity_0b434fb" definitionRef="Definition_Activity_0b434fb" />	
+            <cmmn:humanTask id="Definition_Activity_c2cae44" name="人工任务" type="cmmn:humanTask" width="100" height="80" />	
+            <cmmn:humanTask id="Definition_Activity_0b434fb" name="人工任务" type="cmmn:humanTask" width="100" height="80" />	
+        </cmmn:stage>	
+    </cmmn:casePlanModel>	
+  </cmmn:case>	
+  <cmmndi:CMMNDI>	
+    <cmmndi:CMMNDiagram id="CMMNDiagram_1743498261051">	
+      <cmmndi:Size height="800" width="1200" />	
+        <cmmndi:CMMNShape id="Shape_2713307c-b87a-44a4-b982-71fc54f02c7b" cmmnElementRef="PlanItem_2713307c-b87a-44a4-b982-71fc54f02c7b">	
+          <dc:Bounds x="null" y="null" />	
+          <cmmndi:CMMNLabel />	
+        </cmmndi:CMMNShape>	
+        <cmmndi:CMMNShape id="Shape_Activity_c2cae44" cmmnElementRef="PlanItem_Activity_c2cae44">	
+          <dc:Bounds x="null" y="null" />	
+          <cmmndi:CMMNLabel />	
+        </cmmndi:CMMNShape>	
+        <cmmndi:CMMNShape id="Shape_Activity_0b434fb" cmmnElementRef="PlanItem_Activity_0b434fb">	
+          <dc:Bounds x="null" y="null" />	
+          <cmmndi:CMMNLabel />	
+        </cmmndi:CMMNShape>	
+    </cmmndi:CMMNDiagram>	
+  </cmmndi:CMMNDI>	
+</cmmn:definitions>

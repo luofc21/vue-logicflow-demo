@@ -1,57 +1,62 @@
 <template>
-    <div class="property-panel">
-        <div class="header">
-            <div class="title">属性面板</div>
-            <el-button @click="$emit('hidePropertyPanel')" type="text">
-                <el-icon>
-                    <Close />
-                </el-icon>
-            </el-button>
-        </div>
-        <div class="content">
-            <el-form label-width="80px" size="small">
-                <el-form-item label="节点名称">
-                    <el-input v-model="nodeData.text.value" @change="handleNameChange" />
-                </el-form-item>
-                <el-form-item label="必填项" v-if="isCmmnTask">
-                    <el-switch v-model="nodeData.properties.required" @change="handlePropertyChange" />
-                </el-form-item>
-                <el-form-item label="重复性" v-if="isCmmnTask">
-                    <el-select v-model="nodeData.properties.repetitionRule" @change="handlePropertyChange">
-                        <el-option label="无" value="" />
-                        <el-option label="可重复" value="repeatable" />
-                        <el-option label="必须重复" value="repetitionRequired" />
-                    </el-select>
-                </el-form-item>
-            </el-form>
-        </div>
-    </div>
+    <!-- 编辑抽屉 -->
+    <el-drawer v-model="drawerVisible" title="编辑节点" :size="400" :destroy-on-close="true">
+        <el-form v-model="editForm" label-width="100px">
+            <el-form-item label="节点名称">
+                <el-input v-model="editForm.name" placeholder="请输入节点名称" />
+            </el-form-item>
+            <!-- 可以添加更多表单项 -->
+        </el-form>
+
+        <template #footer>
+            <div style="flex: auto; text-align: right">
+                <el-button @click="drawerVisible = false">取消</el-button>
+                <el-button type="primary" @click="handleSave">确定</el-button>
+            </div>
+        </template>
+    </el-drawer>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { Close } from '@element-plus/icons-vue';
+import { ref, computed, watch } from 'vue'
+// import { Close } from '@element-plus/icons-vue';
 
 const props = defineProps({
-    nodeData: Object
+    nodeData: Object,
+    visible: Boolean
 })
 
-const emit = defineEmits(['hidePropertyPanel', 'updateProperty'])
+const drawerVisible = computed({
+    get() {
+        return props.visible
+    },
+    set(val) {
+        emit('update:visible', val)
+    }
+})
+
+watch(() => props.visible, (newVal) => {
+    console.log('props.visible', newVal)
+    if (newVal) {
+        editForm.value.name = props.nodeData.text?.value || ''
+    }
+}, { immediate: true })
+
+const editForm = ref({
+    name: ''
+})
+
+const emit = defineEmits(['hidePropertyPanel', 'updateProperty', 'update:visible'])
 
 const isCmmnTask = computed(() => {
     return ['HumanTask', 'CaseTask', 'ProcessTask'].includes(props.nodeData?.type)
 })
 
-const handleNameChange = () => {
+const handleSave = () => {
     emit('updateProperty', {
-        text: { value: props.nodeData.text.value }
+        text: { value: editForm.value.name }
     })
-}
-
-const handlePropertyChange = () => {
-    emit('updateProperty', {
-        properties: props.nodeData.properties
-    })
+    drawerVisible.value = false
 }
 </script>
 
