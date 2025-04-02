@@ -12,7 +12,10 @@ import {
   casePlanModelIcon
  } from '../icons';
 import { TaskNodeFactory } from './task';
-import { Stage } from '../Stage';
+// import { Stage } from '../Stage';
+import { BaseTask } from './BaseTask';
+import { HumanTask } from './HumanTask';
+import { Milestone } from './Milestone';
 // import { SubProcessFactory } from './subProcess';
 
 function boundaryEvent(lf: any) {
@@ -125,9 +128,9 @@ export function registerTaskNodes(lf: LogicFlow) {
 
 
   // const CaseTask = TaskNodeFactory('cmmn:caseTask', serviceTaskIcon);
-  const HumanTask = TaskNodeFactory('cmmn:humanTask', userTaskIcon);
+  // const HumanTask = TaskNodeFactory('cmmn:humanTask', userTaskIcon);
   // const ProcessTask = TaskNodeFactory('cmmn:processTask', processTaskIcon);
-  const Milestone = TaskNodeFactory('cmmn:milestone', milestoneIcon);
+  // const Milestone = TaskNodeFactory('cmmn:milestone', milestoneIcon);
   // const EventListener = TaskNodeFactory('cmmn:eventListener', eventListenerIcon);
   // const EntryCriterion = TaskNodeFactory('cmmn:entryCriterion', entryCriterionIcon);
   // const ExitCriterion = TaskNodeFactory('cmmn:exitCriterion', exitCriterionIcon);
@@ -143,4 +146,7 @@ export function registerTaskNodes(lf: LogicFlow) {
   // const stage = Stage;
   // lf.register(stage);
   boundaryEvent(lf);
+
+  // 注册基础任务节点
+  lf.register(BaseTask);
 }

@@ -53,9 +53,7 @@ const isCmmnTask = computed(() => {
 })
 
 const handleSave = () => {
-    emit('updateProperty', {
-        text: { value: editForm.value.name }
-    })
+    emit('updateProperty', editForm.value)
     drawerVisible.value = false
 }
 </script>

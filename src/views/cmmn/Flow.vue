@@ -8,16 +8,8 @@
     </div>
     <div id="graph" class="viewport" />
     <!-- 属性面板 -->
-    <div v-if="showPlanPanel">
-      <PlanPropertyPanel :nodeData="nodeData" @updateProperty="updatePlanProperty"
-        @hidePropertyPanel="hidePlanPropertyPanel" />
-    </div>
     <div v-if="showCommonPanel">
-      <PropertyPanel :nodeData="nodeData" @updateProperty="updateProperty" @hidePropertyPanel="hidePropertyPanel" />
-    </div>
-    <!-- 判断面板 -->
-    <div v-if="showJudgementPanel">
-      <JudgementPanel :nodeData="nodeData" @updateProperty="updateProperty" @hidePropertyPanel="hideJudgementPanel" />
+      <CmmnTaskProperty :nodeData="nodeData" @updateProperty="updateProperty" @hidePropertyPanel="hidePropertyPanel" />
     </div>
     <CmmnProperty v-model:visible="showPropertyPanel" :nodeData="currentNode" @hidePropertyPanel="hidePropertyPanel"
       @updateProperty="handleSave" />
@@ -28,9 +20,9 @@ import { ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import LogicFlow from '@logicflow/core';
 import { DynamicGroup } from '@logicflow/extension';
-import PropertyPanel from '@components/property.vue';
-import PlanPropertyPanel from '@components/plan-property.vue';
-import JudgementPanel from '@components/judgement-panel.vue';
+import CmmnTaskProperty from '@components/cmmn-task-property.vue';
+// import PlanPropertyPanel from '@components/plan-property.vue';
+// import JudgementPanel from '@components/judgement-panel.vue';
 import { themeApprove } from '@/config';
 import '@/style/index.css';
 import '@logicflow/core/dist/index.css';
@@ -67,33 +59,28 @@ const config = {
 };
 
 const lf = ref(null);
-const nodeData = ref();
+const nodeData = ref(null);
 const showCommonPanel = ref(false);
-const showPlanPanel = ref(false);
 const readOnly = ref(false);
-const showJudgementPanel = ref(false);
 const showPropertyPanel = ref(false)
-const drawerVisible = ref(false)
-const editForm = ref({
-  name: ''
-})
+
 const currentNode = ref(null)
 
 const initEvent = (lf) => {
   lf.on('element:click', ({ data }) => {
-    if (readOnly.value) return;
-    if (data.type === 'job') {
-      nodeData.value = data;
-      showCommonPanel.value = true;
-    }
-    if (data.type === 'judgement') {
-      nodeData.value = data;
-      showJudgementPanel.value = true;
-    }
-    if (data.type === 'bpmn:userTask') {
-      nodeData.value = data;
-      showPlanPanel.value = true;
-    }
+    // if (readOnly.value) return;s
+    // if (data.type === 'job') {
+    //   nodeData.value = data;
+    //   showCommonPanel.value = true;
+    // }
+    // if (data.type === 'judgement') {
+    //   nodeData.value = data;
+    //   showJudgementPanel.value = true;
+    // }
+    // if (data.type === 'bpmn:userTask') {
+    //   nodeData.value = data;
+    //   showPlanPanel.value = true;
+    // }
   });
 
   lf.on('connection:not-allowed', (data) => {
@@ -121,36 +108,55 @@ const initEvent = (lf) => {
     // }
   });
 
-  // 监听stage:edit事件
-  lf.on('stage:edit', ({ nodeId, nodeData }) => {
+  // 监听stage:edit事件，当用户编辑stage节点时触发
+  lf.on('stage:edit', ({ nodeId, nodeData: stageData }) => {
+    // 获取当前被编辑的stage节点模型
     currentNode.value = lf.getNodeModelById(nodeId);
-    console.log('event edit ===>', nodeId, nodeData, currentNode.value);
-    // editForm.value.name = nodeData.text?.value || '';
+    console.log('event edit ===>', nodeId, stageData, currentNode.value);
+    // 显示属性面板
     showPropertyPanel.value = true;
+  })
+
+  // 监听task:edit事件，当用户编辑任务节点时触发
+  lf.on('task:edit', ({ nodeId, nodeData: taskData }) => {
+    console.log('edit taskData', nodeId, taskData);
+    // 更新当前编辑的任务节点数据
+    nodeData.value = taskData;
+    // 显示任务属性面板
+    showCommonPanel.value = true;
   })
 };
 
-const updatePlanProperty = (id, data) => {
-  console.log('updateProperty', id, data);
-  const node = lf.value.graphModel.nodesMap[id];
-  const edge = lf.value.graphModel.edgesMap[id];
-  if (node) {
-    node.model.setProperties(data);
-    if (data.name) {
-      console.log('updateText', data.name);
-      node.model.updateText(data.name);
-    }
-  } else if (edge) {
-    edge.model.setProperties(Object.assign(edge.model.properties, data));
-  }
-};
+// const updatePlanProperty = (id, data) => {
+//   console.log('updateProperty', id, data);
+//   const node = lf.value.graphModel.nodesMap[id];
+//   const edge = lf.value.graphModel.edgesMap[id];
+//   if (node) {
+//     node.model.setProperties(data);
+//     if (data.name) {
+//       console.log('updateText', data.name);
+//       node.model.updateText(data.name);
+//     }
+//   } else if (edge) {
+//     edge.model.setProperties(Object.assign(edge.model.properties, data));
+//   }
+// };
 
 const updateProperty = (id, data) => {
   console.log('updateProperty', id, data);
   const node = lf.value.graphModel.nodesMap[id];
   const edge = lf.value.graphModel.edgesMap[id];
   if (node) {
+    // 先设置新的属性
     node.model.setProperties(data);
+    
+    // 如果有名称更新，则更新文本
+    if (data.name) {
+      console.log('updateText', data.name);
+      node.model.updateText(data.name);
+      
+      // 不再需要强制刷新，因为model.updateText已经触发了必要的重绘
+    }
   } else if (edge) {
     edge.model.setProperties(Object.assign(edge.model.properties, data));
   }
@@ -164,10 +170,10 @@ const executePlan = (data) => {
   updateProperty(node[0], data);
 };
 
-const hidePlanPropertyPanel = () => {
-  console.log()
-  showPlanPanel.value = false;
-};
+// const hidePlanPropertyPanel = () => {
+//   console.log()
+//   showPlanPanel.value = false;
+// };
 
 const hidePropertyPanel = () => {
   showCommonPanel.value = false;
@@ -175,13 +181,13 @@ const hidePropertyPanel = () => {
   currentNode.value = null
 };
 
-const hideJudgementPanel = () => {
-  showJudgementPanel.value = false;
-};
+// const hideJudgementPanel = () => {
+//   showJudgementPanel.value = false;
+// };
 
-const updateNodeProperty = (data) => {
-  lf.value.updateProperties(currentNode.value.id, data)
-}
+// const updateNodeProperty = (data) => {
+//   lf.value.updateProperties(currentNode.value.id, data)
+// }
 
 // const initDefaultCmmnProcess = () => {
 //   const data = {
@@ -237,10 +243,8 @@ onMounted(() => {
 
 // 保存节点属性
 const handleSave = (newNodeData) => {
-  if (currentNode.value && !!newNodeData.text.value) {
-    lf.value.setProperties(currentNode.value.id, {
-      text: {...currentNode.value.text, value: newNodeData.text.vlaue}
-    })
+  if (currentNode.value && !!newNodeData.name) {
+    currentNode.value.updateText(newNodeData.name);
   }
 }
 </script>

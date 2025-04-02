@@ -90,7 +90,7 @@ class StageView extends DynamicGroupNode {
             h('g', {
                 transform: `translate(${x - width / 2 + 10}, ${y - height / 2 + 20})`,
                 cursor: 'pointer',
-                onClick: () => this.props.model.toggleCollapse(!this.props.model.isCollapsed) // 父组件的toggleCollapse方法
+                onClick: () => this.props.model.toggleCollapse(!this.props.model.isCollapsed)
             }, [
                 h('circle', {
                     r: 8,
@@ -105,38 +105,40 @@ class StageView extends DynamicGroupNode {
                 })
             ]),
 
-            // 绘制编辑按钮
-            h('g', {
-                transform: `translate(${x + width / 2 - 30}, ${y - height / 2 + 20})`,
-                cursor: 'pointer',
-                onClick: () => this.props.model.handleEdit()
-            }, [
-                h('circle', {
-                    r: 8,
-                    fill: '#fff',
-                    stroke: '#666',
-                    strokeWidth: 1
-                }),
-                // 三点图标
-                h('g', {}, [
+            // 绘制编辑按钮（仅在展开状态显示）
+            ...(isCollapsed ? [] : [
+                h('g', {
+                    transform: `translate(${x + width / 2 - 30}, ${y - height / 2 + 20})`,
+                    cursor: 'pointer',
+                    onClick: () => this.props.model.handleEdit()
+                }, [
                     h('circle', {
-                        cx: -4,
-                        cy: 0,
-                        r: 1.5,
-                        fill: '#666'
+                        r: 8,
+                        fill: '#fff',
+                        stroke: '#666',
+                        strokeWidth: 1
                     }),
-                    h('circle', {
-                        cx: 0,
-                        cy: 0,
-                        r: 1.5,
-                        fill: '#666'
-                    }),
-                    h('circle', {
-                        cx: 4,
-                        cy: 0,
-                        r: 1.5,
-                        fill: '#666'
-                    })
+                    // 三点图标
+                    h('g', {}, [
+                        h('circle', {
+                            cx: -4,
+                            cy: 0,
+                            r: 1.5,
+                            fill: '#666'
+                        }),
+                        h('circle', {
+                            cx: 0,
+                            cy: 0,
+                            r: 1.5,
+                            fill: '#666'
+                        }),
+                        h('circle', {
+                            cx: 4,
+                            cy: 0,
+                            r: 1.5,
+                            fill: '#666'
+                        })
+                    ])
                 ])
             ]),
 

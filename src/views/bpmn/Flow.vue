@@ -85,6 +85,7 @@ const initEvent = (lf) => {
     }
     if (data.type === 'bpmn:userTask') {
       nodeData.value = data;
+      // console.log('nodeData', nodeData.value);
       showPlanPanel.value = true;
     }
   });

@@ -21,11 +21,12 @@ const props = defineProps({
 })
 
 const nodeList = [
+    { type: 'cmmn:task', label: '基础任务', icon: 'bpmn-icon-script-task' },
     { type: 'cmmn:humanTask', label: '人工任务', icon: 'bpmn-icon-user-task' },
     // { type: 'cmmn:caseTask', label: '案例任务', icon: 'bpmn-icon-service-task' },
     { type: 'cmmn:stage', label: '阶段', icon: 'bpmn-icon-subprocess-expanded' },
-    { type: 'dynamic-group', label: '分组', icon: 'bpmn-icon-subprocess-expanded' },
-    { type: 'cmmn:milestone', label: '里程碑', icon: 'bpmn-icon-group' },
+    { type: 'dynamic-group', label: '分组', icon: 'bpmn-icon-group' },
+    // { type: 'cmmn:milestone', label: '里程碑', icon: 'bpmn-icon-group' },
     // { type: 'EventListener', label: '事件监听', icon: Bell },
     // { type: 'EntryCriterion', label: '入口条件', icon: 'Entry' },
     // { type: 'ExitCriterion', label: '出口条件', icon: 'Exit' }

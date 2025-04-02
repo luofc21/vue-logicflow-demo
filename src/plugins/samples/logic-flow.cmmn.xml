@@ -1,28 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cmmn:definitions xmlns:cmmn="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cmmndi="http://www.omg.org/spec/CMMN/20151109/CMMNDI" xmlns:dc="http://www.omg.org/spec/CMMN/20151109/DC" xmlns:di="http://www.omg.org/spec/CMMN/20151109/DI" targetNamespace="http://www.flowable.org/casedef">	
-  <cmmn:case id="Case_1743498261050" name="CMMN Case">	
-    <cmmn:casePlanModel id="CasePlanModel_1743498261051">	
-        <cmmn:planItem id="PlanItem_2713307c-b87a-44a4-b982-71fc54f02c7b" definitionRef="Definition_2713307c-b87a-44a4-b982-71fc54f02c7b" />	
-        <cmmn:stage id="Definition_2713307c-b87a-44a4-b982-71fc54f02c7b" name="阶段2" type="cmmn:stage" width="400" height="230" children="['Activity_c2cae44','Activity_0b434fb']" isCollapsed="false" definitionId="Definition_2713307c-b87a-44a4-b982-71fc54f02c7b">	
-            <cmmn:planItem id="PlanItem_Activity_c2cae44" definitionRef="Definition_Activity_c2cae44" />	
-            <cmmn:planItem id="PlanItem_Activity_0b434fb" definitionRef="Definition_Activity_0b434fb" />	
-            <cmmn:humanTask id="Definition_Activity_c2cae44" name="人工任务" type="cmmn:humanTask" width="100" height="80" />	
-            <cmmn:humanTask id="Definition_Activity_0b434fb" name="人工任务" type="cmmn:humanTask" width="100" height="80" />	
+  <cmmn:case id="Case_1743578740644" name="CMMN Case">	
+    <cmmn:casePlanModel id="CasePlanModel_1743578740644">	
+        <cmmn:planItem id="PlanItem_c92c4526-42aa-4b95-8024-ac6bccbc6647" definitionRef="Definition_c92c4526-42aa-4b95-8024-ac6bccbc6647" />	
+        <cmmn:planItem id="PlanItem_50088877-ebfe-480c-ab81-705682c4ae24" definitionRef="Definition_50088877-ebfe-480c-ab81-705682c4ae24" />	
+        <cmmn:stage id="Definition_c92c4526-42aa-4b95-8024-ac6bccbc6647" name="阶段" type="cmmn:stage" width="400" height="230" children="['Activity_84392d2','Activity_b1c0440']" isCollapsed="false">	
+            <cmmn:planItem id="PlanItem_Activity_84392d2" definitionRef="Definition_Activity_84392d2" />	
+            <cmmn:planItem id="PlanItem_Activity_b1c0440" definitionRef="Definition_Activity_b1c0440" />	
+            <cmmn:task id="Definition_Activity_84392d2" name="基础任务" type="cmmn:task" properties="{'taskType':'baseTask','description':'CMMN基础任务节点'}" width="100" height="80" />	
+            <cmmn:task id="Definition_Activity_b1c0440" name="基础任务" type="cmmn:task" properties="{'taskType':'baseTask','description':'CMMN基础任务节点'}" width="100" height="80" />	
+        </cmmn:stage>	
+        <cmmn:stage id="Definition_50088877-ebfe-480c-ab81-705682c4ae24" name="阶段" type="cmmn:stage" width="400" height="230" children="['Activity_6e7e9f4','Activity_63dab8e']" isCollapsed="false">	
+            <cmmn:planItem id="PlanItem_Activity_6e7e9f4" definitionRef="Definition_Activity_6e7e9f4" />	
+            <cmmn:planItem id="PlanItem_Activity_63dab8e" definitionRef="Definition_Activity_63dab8e" />	
+            <cmmn:task id="Definition_Activity_6e7e9f4" name="基础任务" type="cmmn:task" properties="{'taskType':'baseTask','description':'CMMN基础任务节点'}" width="100" height="80" />	
+            <cmmn:task id="Definition_Activity_63dab8e" name="基础任务" type="cmmn:task" properties="{'taskType':'baseTask','description':'CMMN基础任务节点'}" width="100" height="80" />	
         </cmmn:stage>	
     </cmmn:casePlanModel>	
   </cmmn:case>	
   <cmmndi:CMMNDI>	
-    <cmmndi:CMMNDiagram id="CMMNDiagram_1743498261051">	
+    <cmmndi:CMMNDiagram id="CMMNDiagram_1743578740645">	
       <cmmndi:Size height="800" width="1200" />	
-        <cmmndi:CMMNShape id="Shape_2713307c-b87a-44a4-b982-71fc54f02c7b" cmmnElementRef="PlanItem_2713307c-b87a-44a4-b982-71fc54f02c7b">	
+        <cmmndi:CMMNShape id="Shape_c92c4526-42aa-4b95-8024-ac6bccbc6647" cmmnElementRef="PlanItem_c92c4526-42aa-4b95-8024-ac6bccbc6647">	
           <dc:Bounds x="null" y="null" />	
           <cmmndi:CMMNLabel />	
         </cmmndi:CMMNShape>	
-        <cmmndi:CMMNShape id="Shape_Activity_c2cae44" cmmnElementRef="PlanItem_Activity_c2cae44">	
+        <cmmndi:CMMNShape id="Shape_Activity_84392d2" cmmnElementRef="PlanItem_Activity_84392d2">	
           <dc:Bounds x="null" y="null" />	
           <cmmndi:CMMNLabel />	
         </cmmndi:CMMNShape>	
-        <cmmndi:CMMNShape id="Shape_Activity_0b434fb" cmmnElementRef="PlanItem_Activity_0b434fb">	
+        <cmmndi:CMMNShape id="Shape_Activity_b1c0440" cmmnElementRef="PlanItem_Activity_b1c0440">	
+          <dc:Bounds x="null" y="null" />	
+          <cmmndi:CMMNLabel />	
+        </cmmndi:CMMNShape>	
+        <cmmndi:CMMNShape id="Shape_50088877-ebfe-480c-ab81-705682c4ae24" cmmnElementRef="PlanItem_50088877-ebfe-480c-ab81-705682c4ae24">	
+          <dc:Bounds x="null" y="null" />	
+          <cmmndi:CMMNLabel />	
+        </cmmndi:CMMNShape>	
+        <cmmndi:CMMNShape id="Shape_Activity_6e7e9f4" cmmnElementRef="PlanItem_Activity_6e7e9f4">	
+          <dc:Bounds x="null" y="null" />	
+          <cmmndi:CMMNLabel />	
+        </cmmndi:CMMNShape>	
+        <cmmndi:CMMNShape id="Shape_Activity_63dab8e" cmmnElementRef="PlanItem_Activity_63dab8e">	
           <dc:Bounds x="null" y="null" />	
           <cmmndi:CMMNLabel />	
         </cmmndi:CMMNShape>	

@@ -61,44 +61,69 @@ export function toXml(obj: any, name: string, depth: number) {
         return '';
     }
     
+    // 处理特殊属性名
     if (name === '-json') return '';
+    
+    // 处理文本节点
     if (name === '#text') {
         return prefix + obj;
-    } if (name === '#cdata-section') {
+    } 
+    
+    // 处理CDATA节点
+    if (name === '#cdata-section') {
         return `${prefix}<![CDATA[${obj}]]>`;
-    } if (name === '#comment') {
+    } 
+    
+    // 处理注释节点
+    if (name === '#comment') {
         return `${prefix}<!--${obj}-->`;
     }
+    
+    // 处理属性节点（以-开头的键）
     if (`${name}`.charAt(0) === '-') {
         return ` ${name.substring(1)}="${getAttributes(obj)}"`;
     }
+    
+    // 处理数组类型的值
     if (Array.isArray(obj)) {
         str += obj.map((item) => toXml(item, name, depth + 1)).join('');
-    } else if (type(obj) === '[object Object]') {
+    } 
+    // 处理对象类型的值
+    else if (type(obj) === '[object Object]') {
         const keys = Object.keys(obj);
         let attributes = '';
         let children = '';
 
-        // 处理属性
+        // 处理对象中的属性（以-开头的键）
         keys.forEach((k) => {
             if (k.charAt(0) === '-') {
                 attributes += toXml(obj[k], k, depth + 1);
             }
         });
 
-        // 处理子元素，确保保留结构
+        // 处理对象中的子元素（非-开头的键）
         keys.forEach((k) => {
             if (k.charAt(0) !== '-') {
                 children += toXml(obj[k], k, depth + 1);
             }
         });
 
-        // 如果是根节点，不添加缩进
+        // 生成XML标签
+        // 根节点不添加缩进，子节点需要缩进
         str += `${depth === 0 ? '' : prefix}<${name}`;
         str += attributes;
+        // 如果有子元素，使用开闭标签；否则使用自闭合标签
         str += children !== '' ? `>${children}${prefix}</${name}>` : ' />';
-    } else {
-        str += `${prefix}<${name}>${String(obj)}</${name}>`;
+    } 
+    // 处理基本类型的值
+    else {
+        // 特殊处理flowable:string标签中的CDATA内容，防止内容被转义
+        if (name === 'flowable:string' && obj) {
+            // 使用更标准的缩进格式
+            str += `${prefix}<${name}>${prefix}  <![CDATA[${String(obj)}]]>${prefix}</${name}>`;
+        } else {
+            str += `${prefix}<${name}>${String(obj)}</${name}>`;
+        }
     }
 
     return str;

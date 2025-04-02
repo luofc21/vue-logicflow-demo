@@ -23,7 +23,8 @@ export const CmmnElementsType = {
   STAGE: 'cmmn:stage',  // 添加 stage 类型
   CONNECTOR: 'cmmn:planItemOnPart',
   ENTRY_CRITERION: 'cmmn:entryCriterion',
-  EXIT_CRITERION: 'cmmn:exitCriterion'
+  EXIT_CRITERION: 'cmmn:exitCriterion',
+  TASK: 'cmmn:task'  // 添加基础任务类型
 }
 
 export class CmmnElements {

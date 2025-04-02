@@ -29,9 +29,9 @@ class CmmnBaseAdapter {
     const { lf, propertyConfig } = data
     this.propertyConfig = propertyConfig || {
       transformBasicProps: false, // 默认不转换基本属性
-      includeProps: [],
-      excludeProps: [],
-      propNameMapping: {}
+      includeProps: ['action'],
+      excludeProps: ['readOnly'],
+      propNameMapping: {'action': 'extensionElements'}
     };
     lf.adapterIn = this.adapterIn
     lf.adapterOut = this.adapterOut
@@ -46,6 +46,7 @@ class CmmnBaseAdapter {
       'cmmn:definitions': {
         '-xmlns:cmmn': 'http://www.omg.org/spec/CMMN/20151109/MODEL',
         '-xmlns:cmmndi': 'http://www.omg.org/spec/CMMN/20151109/CMMNDI',
+        '-xmlns:flowable': 'http://flowable.org/cmmn',
         '-xmlns:dc': 'http://www.omg.org/spec/CMMN/20151109/DC',
         '-xmlns:di': 'http://www.omg.org/spec/CMMN/20151109/DI',
         '-targetNamespace': 'http://www.flowable.org/casedef',
@@ -430,7 +431,8 @@ class CmmnBaseAdapter {
       'cmmn:milestone': CmmnElementsType.MILESTONE,
       'cmmn:caseTask': CmmnElementsType.CASE_TASK,
       'cmmn:stage': CmmnElementsType.STAGE,
-      'cmmn:processTask': CmmnElementsType.PROCESS_TASK
+      'cmmn:processTask': CmmnElementsType.PROCESS_TASK,
+      'cmmn:task': CmmnElementsType.TASK
     };
     return typeMap[type] || type;
   }
@@ -446,6 +448,7 @@ class CmmnBaseAdapter {
 
     // 处理自定义属性
     if (node.properties) {
+      // console.log('node.properties +++===>', node.properties)
       Object.entries(node.properties).forEach(([key, value]) => {
         // 检查是否在排除列表中
         if (this.propertyConfig.excludeProps?.includes(key)) {
@@ -455,21 +458,52 @@ class CmmnBaseAdapter {
         // 使用属性名称映射
         const mappedKey = this.propertyConfig.propNameMapping?.[key] || key;
         
-        // 检查是否在包含列表中
-        if ((this.propertyConfig.includeProps || []).length > 0) {
-          if ((this.propertyConfig.includeProps || []).includes(key)) {
-            // 在包含列表中的属性作为 XML 子标签
-            properties[mappedKey] = value;
-          }
-          // 不在包含列表中的属性不处理
-        } else {
-          // 如果没有指定包含列表，则所有属性都作为 XML 属性
+        // 处理action对象，转换为flowable:field格式
+        if (key === 'action' && typeof value === 'object') {
+          properties['cmmn:extensionElements'] = this.convertActionToFlowableFields(value);
+        } 
+        // 检查是否在包含列表中，则属性作为 XML 子标签
+        else if ((this.propertyConfig.includeProps || []).length > 0 && (this.propertyConfig.includeProps || []).includes(key)) {
+          properties[mappedKey] = value;
+        } 
+        // 如果没有指定包含列表，则所有属性都作为 XML 属性
+        else {
           properties[`-${mappedKey}`] = value;
         }
       });
     }
+    // console.log('properties +++===>', properties)
 
     return properties;
+  }
+
+  /**
+   * 将action对象转换为flowable:field格式
+   * @param actionObj action对象
+   * @returns 转换后的flowable:field格式对象
+   */
+  private convertActionToFlowableFields(actionObj: any) {
+    // 创建flowable:field数组
+    const flowableFields: any[] = [];
+    
+    // 遍历action对象的所有属性
+    Object.entries(actionObj).forEach(([key, value]) => {
+      // 创建flowable:field对象
+      const fieldObj = {
+        '-name': key,
+        'flowable:string': {
+          '#cdata-section': String(value)
+        }
+      };
+      
+      // 添加到数组
+      flowableFields.push(fieldObj);
+    });
+    
+    // 返回包含所有flowable:field的extensionElements对象，使用cmmn:前缀
+    return {
+      'flowable:field': flowableFields
+    };
   }
 
   private convertLf2CmmnDiagram(data: any) {
@@ -480,10 +514,10 @@ class CmmnBaseAdapter {
       '-id': `Shape_${node.id}`,
       '-cmmnElementRef': `PlanItem_${node.id}`,
       'dc:Bounds': {
-        '-x': node.x - node.width / 2,
-        '-y': node.y - node.height / 2,
-        '-width': node.width,
-        '-height': node.height
+        '-x': isNaN(node.x) ? 200 : node.x - (node.width || 100) / 2,
+        '-y': isNaN(node.y) ? 200 : node.y - (node.height || 80) / 2,
+        '-width': node.width || 100,
+        '-height': node.height || 80
       },
       'cmmndi:CMMNLabel': {}
     }));
