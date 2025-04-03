@@ -1,43 +1,81 @@
 <template>
     <div class="cmmn-node-panel">
         <div class="panel-title">CMMN节点</div>
-        <div class="node-list">
-            <div class="node-item" v-for="(item, index) in nodeList" :key="index"
-                @mousedown="addNode(item.type, { text: item.label })">
-                <div class="node-item-icon">
-                    <SvgIcon :iconClass="item.icon" />
+        <el-collapse v-model="activeNames" accordion>
+            <el-collapse-item title="任务节点" name="tasks">
+                <div class="node-list">
+                    <div class="node-item" v-for="item in taskNodes" :key="item.type"
+                        @mousedown="addNode(item.type, { text: item.label })">
+                        <div class="node-item-icon">
+                            <SvgIcon :iconClass="item.icon" />
+                        </div>
+                        <div class="node-item-label">{{ item.label }}</div>
+                    </div>
                 </div>
-                <div class="node-item-label">{{ item.label }}</div>
-            </div>
-        </div>
+            </el-collapse-item>
+            
+            <el-collapse-item title="阶段节点" name="stages">
+                <div class="node-list">
+                    <div class="node-item" v-for="item in stageNodes" :key="item.type"
+                        @mousedown="addNode(item.type, { text: item.label })">
+                        <div class="node-item-icon">
+                            <SvgIcon :iconClass="item.icon" />
+                        </div>
+                        <div class="node-item-label">{{ item.label }}</div>
+                    </div>
+                </div>
+            </el-collapse-item>
+            
+            <el-collapse-item title="其他节点" name="others">
+                <div class="node-list">
+                    <div class="node-item" v-for="item in otherNodes" :key="item.type"
+                        @mousedown="addNode(item.type, { text: item.label })">
+                        <div class="node-item-icon">
+                            <SvgIcon :iconClass="item.icon" />
+                        </div>
+                        <div class="node-item-label">{{ item.label }}</div>
+                    </div>
+                </div>
+            </el-collapse-item>
+        </el-collapse>
     </div>
 </template>
 
 <script setup lang="ts">
 import SvgIcon from './SvgIcon.vue';
+import { ref, computed } from 'vue';
 
 const props = defineProps({
     lf: Object
-})
+});
 
-const nodeList = [
-    { type: 'cmmn:task', label: '基础任务', icon: 'bpmn-icon-script-task' },
-    { type: 'cmmn:humanTask', label: '人工任务', icon: 'bpmn-icon-user-task' },
-    // { type: 'cmmn:caseTask', label: '案例任务', icon: 'bpmn-icon-service-task' },
-    { type: 'cmmn:stage', label: '阶段', icon: 'bpmn-icon-subprocess-expanded' },
-    { type: 'dynamic-group', label: '分组', icon: 'bpmn-icon-group' },
-    // { type: 'cmmn:milestone', label: '里程碑', icon: 'bpmn-icon-group' },
-    // { type: 'EventListener', label: '事件监听', icon: Bell },
-    // { type: 'EntryCriterion', label: '入口条件', icon: 'Entry' },
-    // { type: 'ExitCriterion', label: '出口条件', icon: 'Exit' }
-]
+// 默认展开的折叠面板
+const activeNames = ref(['tasks']);
+
+// 所有节点定义
+const allNodes = [
+    { type: 'cmmn:task', label: '基础任务', icon: 'bpmn-icon-script-task', category: 'tasks' },
+    { type: 'cmmn:humanTask', label: '人工任务', icon: 'bpmn-icon-user-task', category: 'tasks' },
+    // { type: 'cmmn:caseTask', label: '案例任务', icon: 'bpmn-icon-service-task', category: 'tasks' },
+    { type: 'cmmn:stage', label: '阶段', icon: 'bpmn-icon-subprocess-expanded', category: 'stages' },
+    { type: 'dynamic-group', label: '分组', icon: 'bpmn-icon-group', category: 'others' },
+    // { type: 'cmmn:milestone', label: '里程碑', icon: 'bpmn-icon-group', category: 'others' },
+    // { type: 'EventListener', label: '事件监听', icon: Bell, category: 'others' },
+    // { type: 'EntryCriterion', label: '入口条件', icon: 'Entry', category: 'others' },
+    // { type: 'ExitCriterion', label: '出口条件', icon: 'Exit', category: 'others' }
+];
+
+// 按分类过滤节点
+const taskNodes = computed(() => allNodes.filter(node => node.category === 'tasks'));
+const stageNodes = computed(() => allNodes.filter(node => node.category === 'stages'));
+const otherNodes = computed(() => allNodes.filter(node => node.category === 'others'));
 
 function addNode(type: string, { text, properties }: any) {
     props.lf!.dnd.startDrag({
         type,
         text: text,
         width: 200,
-        height:200,
+        height: 200,
         properties,
     });
 }
@@ -62,6 +100,7 @@ function addNode(type: string, { text, properties }: any) {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    padding: 10px 0;
 }
 
 .node-item {
@@ -86,6 +125,15 @@ function addNode(type: string, { text, properties }: any) {
 
 .node-item-label {
     font-size: 12px;
+}
 
+/* Element Plus 样式调整 */
+:deep(.el-collapse-item__header) {
+    font-weight: bold;
+    padding-left: 5px;
+}
+
+:deep(.el-collapse-item__content) {
+    padding-bottom: 0;
 }
 </style>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<cmmn:definitions xmlns:cmmn="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cmmndi="http://www.omg.org/spec/CMMN/20151109/CMMNDI" xmlns:flowable="http://flowable.org/cmmn" xmlns:dc="http://www.omg.org/spec/CMMN/20151109/DC" xmlns:di="http://www.omg.org/spec/CMMN/20151109/DI" targetNamespace="http://www.flowable.org/casedef">	
-  <cmmn:case id="Case_1743647461366" name="CMMN Case">	
-    <cmmn:casePlanModel id="CasePlanModel_1743647461367">	
-        <cmmn:planItem id="PlanItem_17cee8d5-e3fd-4cbc-9731-83f95c63b970" definitionRef="Definition_17cee8d5-e3fd-4cbc-9731-83f95c63b970" />	
-        <cmmn:stage id="Definition_17cee8d5-e3fd-4cbc-9731-83f95c63b970" name="启动线网一级客控" type="cmmn:stage" width="400" height="230" children="['Activity_93e91d4']" isCollapsed="false">	
-            <cmmn:planItem id="PlanItem_Activity_93e91d4" definitionRef="Definition_Activity_93e91d4" />	
-            <cmmn:task id="Definition_Activity_93e91d4" name="处置信息向集团领导通报" type="cmmn:task" flowable:type="java" flowable:class="com.pci.hjmos.process.engine.planItem.MyPlanItemJavaDelegate" width="100" height="80" args="[]" needRerender="1743647457772">	
-              <cmmn:extensionElements>	
+<definitions xmlns:cmmn="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cmmndi="http://www.omg.org/spec/CMMN/20151109/CMMNDI" xmlns:flowable="http://flowable.org/cmmn" xmlns:dc="http://www.omg.org/spec/CMMN/20151109/DC" xmlns:di="http://www.omg.org/spec/CMMN/20151109/DI" targetNamespace="http://www.flowable.org/casedef">	
+  <case id="Case_1743647461366" name="CMMN Case">	
+    <casePlanModel id="CasePlanModel_1743647461367">	
+        <planItem id="PlanItem_17cee8d5-e3fd-4cbc-9731-83f95c63b970" definitionRef="Definition_17cee8d5-e3fd-4cbc-9731-83f95c63b970" />	
+        <stage id="Definition_17cee8d5-e3fd-4cbc-9731-83f95c63b970" name="启动线网一级客控" type="cmmn:stage" width="400" height="230" children="['Activity_93e91d4']" isCollapsed="false">	
+            <planItem id="PlanItem_Activity_93e91d4" definitionRef="Definition_Activity_93e91d4" />	
+            <task id="Definition_Activity_93e91d4" name="处置信息向集团领导通报" type="cmmn:task" flowable:type="java" flowable:class="com.pci.hjmos.process.engine.planItem.MyPlanItemJavaDelegate" width="100" height="80" args="[]" needRerender="1743647457772">	
+              <extensionElements>	
                   <flowable:field name="taskType">	
                     <flowable:string>	
                       <![CDATA[auto]]>	
@@ -47,11 +47,11 @@
                       <![CDATA[task_bryfeoy6]]>	
                     </flowable:string>	
                   </flowable:field>	
-              </cmmn:extensionElements>	
-            </cmmn:task>	
-        </cmmn:stage>	
-    </cmmn:casePlanModel>	
-  </cmmn:case>	
+              </extensionElements>	
+            </task>	
+        </stage>	
+    </casePlanModel>	
+  </case>	
   <cmmndi:CMMNDI>	
     <cmmndi:CMMNDiagram id="CMMNDiagram_1743647461367">	
       <cmmndi:Size height="800" width="1200" />	
@@ -65,4 +65,4 @@
         </cmmndi:CMMNShape>	
     </cmmndi:CMMNDiagram>	
   </cmmndi:CMMNDI>	
-</cmmn:definitions>
+</definitions>
