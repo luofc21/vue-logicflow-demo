@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flowable="http://flowable.org/cmmn"
+  xmlns:cmmndi="http://www.omg.org/spec/CMMN/20151109/CMMNDI"
+  xmlns:dc="http://www.omg.org/spec/CMMN/20151109/DC"
+  xmlns:di="http://www.omg.org/spec/CMMN/20151109/DI"
+  targetNamespace="http://www.flowable.org/casedef" exporter="Flowable Open Source Modeler"
+  exporterVersion="6.8.1">
+  <case id="all_passenger_flow" name="线网-大客流预案" flowable:initiatorVariableName="initiator">
+    <documentation>线网-大客流预案1</documentation>
+    <casePlanModel id="casePlanModel" name="线网大客流预案" flowable:formFieldValidation="true">
+      <planItem id="planItem8" name="启动线网一级客控"
+        definitionRef="sid-5169EA8E-B8FD-4577-BB71-860BE77C023D">
+        <itemControl>
+          <manualActivationRule></manualActivationRule>
+        </itemControl>
+      </planItem>
+      <stage id="sid-5169EA8E-B8FD-4577-BB71-860BE77C023D" name="启动线网一级客控">
+        <planItem id="planItem1" name="处置信息向集团领导通报"
+          definitionRef="sid-BC2E9F7F-48EF-4EA7-84D5-2BA6B04E52C8"></planItem>
+        <planItem id="planItem2" name="全线车站发布线路客流管控PIS文本"
+          definitionRef="sid-BC2E9F7F-48EF-4EA7-84D5-2BA6B04E5211"></planItem>
+        <task id="sid-BC2E9F7F-48EF-4EA7-84D5-2BA6B04E52C8" name="处置信息向集团领导通报" flowable:type="java"
+          flowable:class="com.pci.hjmos.process.engine.planItem.MyPlanItemJavaDelegate">
+          <extensionElements>
+            <flowable:field name="taskId">
+              <flowable:string><![CDATA[taskIdId]]></flowable:string>
+            </flowable:field>
+            <flowable:field name="taskName">
+              <flowable:string><![CDATA[taskName]]></flowable:string>
+            </flowable:field>
+            <flowable:field name="taskType">
+              <flowable:string><![CDATA[短信taskType]]></flowable:string>
+            </flowable:field>
+            <flowable:field name="requestUrl">
+              <flowable:string><![CDATA[http://172.29.20.58:8081/process-engine/test]]></flowable:string>
+            </flowable:field>
+            <flowable:field name="requestHeaders">
+              <flowable:string><![CDATA[Content-Type:application/json;charset=UTF-8]]></flowable:string>
+            </flowable:field>
+            <flowable:field name="requestMethod">
+              <flowable:string><![CDATA[POST]]></flowable:string>
+            </flowable:field>
+            <flowable:field name="userInfo">
+              <flowable:string><![CDATA[[{"userName":"张三","phoneNumber":"18888888888"}]]]></flowable:string>
+            </flowable:field>
+            <flowable:field name="massage">
+              <flowable:string><![CDATA[短信内容]]></flowable:string>
+            </flowable:field>
+          </extensionElements>
+        </task>
+        <task id="sid-BC2E9F7F-48EF-4EA7-84D5-2BA6B04E5211" name="全线车站发布线路客流管控PIS文本"
+          flowable:type="java"
+          flowable:class="com.pci.hjmos.process.engine.planItem.MyPlanItemJavaDelegate">
+          <extensionElements>
+            <flowable:field name="taskId">
+              <flowable:string><![CDATA[taskId]]></flowable:string>
+            </flowable:field>
+            <flowable:field name="taskType">
+              <flowable:string><![CDATA[taskType]]></flowable:string>
+            </flowable:field>
+            <flowable:field name="massage">
+              <flowable:string><![CDATA[massage]]></flowable:string>
+            </flowable:field>
+            <flowable:field name="requestUrl">
+              <flowable:string><![CDATA[requestUrl]]></flowable:string>
+            </flowable:field>
+            <flowable:field name="requestHeaders">
+              <flowable:string><![CDATA[requestHeaders]]></flowable:string>
+            </flowable:field>
+            <flowable:field name="requestMethod">
+              <flowable:string><![CDATA[requestMethod]]></flowable:string>
+            </flowable:field>
+            <flowable:field name="taskName">
+              <flowable:string><![CDATA[taskName]]></flowable:string>
+            </flowable:field>
+          </extensionElements>
+        </task>
+      </stage>
+    </casePlanModel>
+  </case>
+  <cmmndi:CMMNDI>
+    <cmmndi:CMMNDiagram id="CMMNDiagram_all_passenger_flow">
+      <cmmndi:CMMNShape id="CMMNShape_casePlanModel" cmmnElementRef="casePlanModel">
+        <dc:Bounds height="1124.0000010869721" width="720.4999960834326" x="30.000000422651148"
+          y="0.0"></dc:Bounds>
+        <cmmndi:CMMNLabel></cmmndi:CMMNLabel>
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="CMMNShape_planItem8" cmmnElementRef="planItem8">
+        <dc:Bounds height="208.9999998450279" width="485.0000001267954" x="75.00000042265114"
+          y="30.0"></dc:Bounds>
+        <cmmndi:CMMNLabel></cmmndi:CMMNLabel>
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="CMMNShape_planItem1" cmmnElementRef="planItem1">
+        <dc:Bounds height="80.0" width="100.0" x="93.00000703009772" y="57.00000160607437"></dc:Bounds>
+        <cmmndi:CMMNLabel></cmmndi:CMMNLabel>
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="CMMNShape_planItem2" cmmnElementRef="planItem2">
+        <dc:Bounds height="80.0" width="100.0" x="212.00000601573473" y="150.0000042265115"></dc:Bounds>
+        <cmmndi:CMMNLabel></cmmndi:CMMNLabel>
+      </cmmndi:CMMNShape>
+    </cmmndi:CMMNDiagram>
+  </cmmndi:CMMNDI>
+</definitions>

@@ -1,68 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns:cmmn="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cmmndi="http://www.omg.org/spec/CMMN/20151109/CMMNDI" xmlns:flowable="http://flowable.org/cmmn" xmlns:dc="http://www.omg.org/spec/CMMN/20151109/DC" xmlns:di="http://www.omg.org/spec/CMMN/20151109/DI" targetNamespace="http://www.flowable.org/casedef">	
-  <case id="Case_1743647461366" name="CMMN Case">	
-    <casePlanModel id="CasePlanModel_1743647461367">	
-        <planItem id="PlanItem_17cee8d5-e3fd-4cbc-9731-83f95c63b970" definitionRef="Definition_17cee8d5-e3fd-4cbc-9731-83f95c63b970" />	
-        <stage id="Definition_17cee8d5-e3fd-4cbc-9731-83f95c63b970" name="启动线网一级客控" type="cmmn:stage" width="400" height="230" children="['Activity_93e91d4']" isCollapsed="false">	
-            <planItem id="PlanItem_Activity_93e91d4" definitionRef="Definition_Activity_93e91d4" />	
-            <task id="Definition_Activity_93e91d4" name="处置信息向集团领导通报" type="cmmn:task" flowable:type="java" flowable:class="com.pci.hjmos.process.engine.planItem.MyPlanItemJavaDelegate" width="100" height="80" args="[]" needRerender="1743647457772">	
-              <extensionElements>	
-                  <flowable:field name="taskType">	
-                    <flowable:string>	
+<cmmn:definitions xmlns:cmmn="http://www.omg.org/spec/CMMN/20151109/MODEL"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:flowable="http://flowable.org/cmmn"
+  xmlns:cmmndi="http://www.omg.org/spec/CMMN/20151109/CMMNDI"
+  xmlns:dc="http://www.omg.org/spec/CMMN/20151109/DC"
+  xmlns:di="http://www.omg.org/spec/CMMN/20151109/DI"
+  targetNamespace="http://www.flowable.org/casedef"
+  exporter="Flowable Open Source Modeler"
+  exporterVersion="6.8.1">
+  <cmmn:case id="Case_1743647461366" name="DKL-CMMN-2" flowable:initiatorVariableName="initiator">
+    <cmmn:documentation>DKL-CMMN-2</cmmn:documentation>
+    <cmmn:casePlanModel id="CasePlanModel_1743647461367" name="DKL-CMMN-2"
+      flowable:formFieldValidation="true">
+      <cmmn:planItem id="PlanItem_17cee8d5-e3fd-4cbc-9731-83f95c63b970" name="启动线网一级客控"
+        definitionRef="Definition_17cee8d5-e3fd-4cbc-9731-83f95c63b970"></cmmn:planItem>
+      <cmmn:stage id="Definition_17cee8d5-e3fd-4cbc-9731-83f95c63b970" name="启动线网一级客控"
+        type="cmmn:stage"
+        width="400" height="230" children="['Activity_93e91d4']" isCollapsed="false">
+        <cmmn:planItem id="PlanItem_Activity_93e91d4" definitionRef="Definition_Activity_93e91d4"></cmmn:planItem>
+        <cmmn:task id="Definition_Activity_93e91d4" name="处置信息向集团领导通报" type="cmmn:task"
+          flowable:type="java"
+          flowable:class="com.pci.hjmos.process.engine.planItem.MyPlanItemJavaDelegate" width="100"
+          height="80" args="[]" needRerender="1743647457772">
+          <cmmn:extensionElements>
+            <flowable:field name="taskType">
+              <flowable:string>	
                       <![CDATA[auto]]>	
-                    </flowable:string>	
-                  </flowable:field>	
-                  <flowable:field name="requestUrl">	
-                    <flowable:string>	
+                    </flowable:string>
+            </flowable:field>
+            <flowable:field name="requestUrl">
+              <flowable:string>	
                       <![CDATA[http://dev-k8s.pcitech.com:30780/nec/plan/get/process?eventCode=dkl03]]>	
-                    </flowable:string>	
-                  </flowable:field>	
-                  <flowable:field name="requestHeaders">	
-                    <flowable:string>	
+                    </flowable:string>
+            </flowable:field>
+            <flowable:field name="requestHeaders">
+              <flowable:string>	
                       <![CDATA[{"Authorization": "Basic MTAxOjEyMzQ1Ng==","ID-Token": "32919556-4765-40d9-81f0-f20698dc7381"}]]>	
-                    </flowable:string>	
-                  </flowable:field>	
-                  <flowable:field name="requestMethod">	
-                    <flowable:string>	
+                    </flowable:string>
+            </flowable:field>
+            <flowable:field name="requestMethod">
+              <flowable:string>	
                       <![CDATA[put]]>	
-                    </flowable:string>	
-                  </flowable:field>	
-                  <flowable:field name="topic">	
-                    <flowable:string>	
+                    </flowable:string>
+            </flowable:field>
+            <flowable:field name="topic">
+              <flowable:string>	
                       <![CDATA[task]]>	
-                    </flowable:string>	
-                  </flowable:field>	
-                  <flowable:field name="massage">	
-                    <flowable:string>	
+                    </flowable:string>
+            </flowable:field>
+            <flowable:field name="massage">
+              <flowable:string>	
                       <![CDATA["{\"code\":0,\"message\":\"ok\",\"data\":{\"pointList\":[{\"name\":\"启动线网一级客控\",\"index\":0,\"active\":1,\"opsItemList\":[{\"auto\":true,\"decision\":\"2025-03-17 20:47:18 已向集团领导通报\",\"opsItemGroup\":\"信息通报\",\"index\":0,\"completeTime\":\"2025-03-17 20:47:18\",\"showStatus\":true,\"decisionTemplate\":\"@time 已向集团领导通报\",\"statusTip\":\"启动则触发短信通报\",\"delay\":2,\"name\":\"总调\",\"buttonContent\":\"\",\"switchValue\":0,\"action\":\"处置信息向集团领导通报（戴*军，158****1486）\",\"decisionType\":1,\"group\":\"自动\",\"status\":3}],\"status\":0}]}}"]]>	
-                    </flowable:string>	
-                  </flowable:field>	
-                  <flowable:field name="taskName">	
-                    <flowable:string>	
+                    </flowable:string>
+            </flowable:field>
+            <flowable:field name="taskName">
+              <flowable:string>	
                       <![CDATA[信息通报]]>	
-                    </flowable:string>	
-                  </flowable:field>	
-                  <flowable:field name="taskId">	
-                    <flowable:string>	
+                    </flowable:string>
+            </flowable:field>
+            <flowable:field name="taskId">
+              <flowable:string>	
                       <![CDATA[task_bryfeoy6]]>	
-                    </flowable:string>	
-                  </flowable:field>	
-              </extensionElements>	
-            </task>	
-        </stage>	
-    </casePlanModel>	
-  </case>	
-  <cmmndi:CMMNDI>	
-    <cmmndi:CMMNDiagram id="CMMNDiagram_1743647461367">	
-      <cmmndi:Size height="800" width="1200" />	
-        <cmmndi:CMMNShape id="Shape_Activity_93e91d4" cmmnElementRef="PlanItem_Activity_93e91d4">	
-          <dc:Bounds x="679" y="350" width="100" height="80" />	
-          <cmmndi:CMMNLabel />	
-        </cmmndi:CMMNShape>	
-        <cmmndi:CMMNShape id="Shape_17cee8d5-e3fd-4cbc-9731-83f95c63b970" cmmnElementRef="PlanItem_17cee8d5-e3fd-4cbc-9731-83f95c63b970">	
-          <dc:Bounds x="750" y="335" width="100" height="80" />	
-          <cmmndi:CMMNLabel />	
-        </cmmndi:CMMNShape>	
-    </cmmndi:CMMNDiagram>	
-  </cmmndi:CMMNDI>	
-</definitions>
+                    </flowable:string>
+            </flowable:field>
+          </cmmn:extensionElements>
+        </cmmn:task>
+      </cmmn:stage>
+    </cmmn:casePlanModel>
+  </cmmn:case>
+  <cmmndi:CMMNDI>
+    <cmmndi:CMMNDiagram id="CMMNDiagram_1743647461367">
+      <cmmndi:CMMNShape id="CMMNShape_casePlanModel" cmmnElementRef="CasePlanModel_1743647461367">
+        <dc:Bounds height="1124.0000010869721" width="720.4999960834326" x="30.000000422651148"
+          y="0.0"></dc:Bounds>
+        <cmmndi:CMMNLabel></cmmndi:CMMNLabel>
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="Shape_Activity_93e91d4" cmmnElementRef="PlanItem_Activity_93e91d4">
+        <dc:Bounds x="60" y="350" width="100" height="80" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+      <cmmndi:CMMNShape id="Shape_17cee8d5-e3fd-4cbc-9731-83f95c63b970"
+        cmmnElementRef="PlanItem_17cee8d5-e3fd-4cbc-9731-83f95c63b970">
+        <dc:Bounds x="50" y="335" width="400" height="350" />
+        <cmmndi:CMMNLabel />
+      </cmmndi:CMMNShape>
+    </cmmndi:CMMNDiagram>
+  </cmmndi:CMMNDI>
+</cmmn:definitions>
