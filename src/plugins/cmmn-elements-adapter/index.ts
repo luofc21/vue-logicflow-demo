@@ -42,20 +42,44 @@ class CmmnBaseAdapter {
     // 转换dynamic-group节点为stage节点
     const convertedNodes = this.convertDynamicGroupsToStages(nodes);
     
+    // 检查是否存在casePlanModel节点
+    const casePlanModelNode = convertedNodes.find(node => node.type === 'cmmn:casePlanModel');
+    if (!casePlanModelNode) {
+      console.warn('CMMN警告: 没有找到casePlanModel节点，CMMN规范要求必须有一个casePlanModel根节点');
+      // 如果other中有suppressWarning设置为true，则仍然进行转换
+      if (!other?.suppressWarning) {
+        return {
+          warning: '没有找到casePlanModel节点，请添加一个casePlanModel节点作为根节点',
+          data: null
+        };
+      }
+    }
+    
+    // 获取case名称，如果other中有caseName则使用，否则使用默认名称
+    const caseName = other?.caseName || (casePlanModelNode?.text?.value || 'CMMN Case');
+    const casePlanModelName = other?.casePlanModelName || caseName;
+    const caseId = `Case_${Date.now()}`;
+    const casePlanModelId = `CasePlanModel_${Date.now()}`;
+    
     const cmmnJson: any = {
       'cmmn:definitions': {
         '-xmlns:cmmn': 'http://www.omg.org/spec/CMMN/20151109/MODEL',
-        '-xmlns:cmmndi': 'http://www.omg.org/spec/CMMN/20151109/CMMNDI',
+        '-xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
         '-xmlns:flowable': 'http://flowable.org/cmmn',
+        '-xmlns:cmmndi': 'http://www.omg.org/spec/CMMN/20151109/CMMNDI',
         '-xmlns:dc': 'http://www.omg.org/spec/CMMN/20151109/DC',
         '-xmlns:di': 'http://www.omg.org/spec/CMMN/20151109/DI',
         '-targetNamespace': 'http://www.flowable.org/casedef',
+        '-exporter': 'Flowable Open Source Modeler',
+        '-exporterVersion': '6.8.1',
         'cmmn:case': {
-          '-id': `Case_${Date.now()}`,
-          '-name': 'CMMN Case',
-          'cmmn:casePlanModel': this.convertLf2CmmnProcess(convertedNodes, edges)
+          '-id': caseId,
+          '-name': caseName,
+          '-flowable:initiatorVariableName': 'initiator',
+          'cmmn:documentation': caseName, // 添加documentation标签
+          'cmmn:casePlanModel': this.convertLf2CmmnProcess(convertedNodes, edges, casePlanModelId, casePlanModelName)
         },
-        'cmmndi:CMMNDI': this.convertLf2CmmnDiagram({ nodes: convertedNodes, edges })
+        'cmmndi:CMMNDI': this.convertLf2CmmnDiagram({ nodes: convertedNodes, edges, casePlanModelId })
       }
     }
     return cmmnJson
@@ -302,15 +326,19 @@ class CmmnBaseAdapter {
     return properties;
   }
 
-  private convertLf2CmmnProcess(nodes: any[], edges: any[]) {
+  private convertLf2CmmnProcess(nodes: any[], edges: any[], casePlanModelId: string, casePlanModelName: string) {
     const planItems: any[] = [];
     const definitions: Record<string, any[]> = {}; // 使用对象存储不同类型的定义
     const stageNodes = new Map(); // 存储 stage 节点及其子节点的映射
     const processedChildren = new Set(); // 跟踪已处理的子节点
-    console.log('node ===>', nodes)
-
+    
+    // 找到casePlanModel节点
+    const casePlanModelNode = nodes.find(node => node.type === 'cmmn:casePlanModel');
+    // 所有非casePlanModel节点应该作为casePlanModel的子节点
+    const childNodes = nodes.filter(node => node.type !== 'cmmn:casePlanModel');
+    
     // 首先处理所有 stage 节点及其子节点关系
-    nodes.forEach(node => {
+    childNodes.forEach(node => {
       if (node.type === 'cmmn:stage' && node.children) {
         stageNodes.set(node.id, node.children);
         // 将所有子节点添加到已处理集合中
@@ -321,7 +349,7 @@ class CmmnBaseAdapter {
     });
 
     // 处理普通节点
-    nodes.forEach(node => {
+    childNodes.forEach(node => {
       // 如果节点是某个 stage 的子节点，跳过添加到顶层 planItems
       if (processedChildren.has(node.id)) {
         return; // 跳过已经作为子节点处理的节点
@@ -409,11 +437,25 @@ class CmmnBaseAdapter {
       definitions[node.type].push(definition);
     });
     
+    // 使用casePlanModel节点的名称和属性
+    const casePlanModelCustomName = casePlanModelNode?.text?.value || casePlanModelName;
+    
     // 构建最终的 casePlanModel 结构
     const casePlanModel = {
-      '-id': `CasePlanModel_${Date.now()}`,
+      '-id': casePlanModelId,
+      '-name': casePlanModelCustomName,
+      '-flowable:formFieldValidation': 'true',
       'cmmn:planItem': planItems.length > 0 ? planItems : undefined,
     };
+    
+    // 如果有casePlanModel节点，则使用其属性
+    if (casePlanModelNode) {
+      // 提取casePlanModel节点的附加属性
+      const casePlanModelProps = this.getDefinitionProperties(casePlanModelNode);
+      if (Object.keys(casePlanModelProps).length > 0) {
+        Object.assign(casePlanModel, casePlanModelProps);
+      }
+    }
     
     // 添加各类型的定义到 casePlanModel
     Object.entries(definitions).forEach(([type, defs]) => {
@@ -507,7 +549,7 @@ class CmmnBaseAdapter {
   }
 
   private convertLf2CmmnDiagram(data: any) {
-    const { nodes, edges } = data;
+    const { nodes, edges, casePlanModelId } = data;
     
     // 创建所有节点的形状数据
     const shapes = nodes.map((node: any) => ({
@@ -531,10 +573,26 @@ class CmmnBaseAdapter {
         '-y': point.y
       }))
     }));
+
+    // 创建casePlanModel的形状数据
+    const casePlanModelShape = {
+      '-id': `CMMNShape_casePlanModel`,
+      '-cmmnElementRef': casePlanModelId,
+      'dc:Bounds': {
+        '-height': 1124.0000010869721,
+        '-width': 720.4999960834326,
+        '-x': 30.000000422651148,
+        '-y': 0.0
+      },
+      'cmmndi:CMMNLabel': {}
+    };
+
+    // 将casePlanModel形状添加到shapes数组的开头
+    shapes.unshift(casePlanModelShape);
     
     return {
       'cmmndi:CMMNDiagram': {
-        '-id': `CMMNDiagram_${Date.now()}`,
+        '-id': `CMMNDiagram_${casePlanModelId}`,
         'cmmndi:Size': { '-height': 800, '-width': 1200 },
         'cmmndi:CMMNShape': shapes,
         'cmmndi:CMMNEdge': edgeShapes
@@ -601,7 +659,22 @@ export class CmmnAdapter extends CmmnBaseAdapter {
   };
   adapterXmlOut = (data: any) => {
     const outData = this.adapterOut(data, this.props);
-    return lfJson2Xml(outData);
+    
+    // 检查是否有警告信息
+    if (outData && outData.warning) {
+      console.warn('CMMN导出警告:', outData.warning);
+      // 如果用户配置了onWarning回调，则调用
+      if (typeof this.props?.onWarning === 'function') {
+        this.props.onWarning(outData.warning);
+      }
+      // 返回空XML
+      return '<?xml version="1.0" encoding="UTF-8"?>\n<!-- ' + outData.warning + ' -->';
+    }
+    
+    // 正常处理数据
+    // 检查是否需要移除cmmn前缀，默认不移除
+    const removePrefix = this.props?.removePrefix || false;
+    return lfJson2Xml(outData, removePrefix);
   };
 }
 

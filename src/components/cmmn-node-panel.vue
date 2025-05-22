@@ -25,6 +25,18 @@
                     </div>
                 </div>
             </el-collapse-item>
+
+            <el-collapse-item title="案例节点" name="cases">
+                <div class="node-list">
+                    <div class="node-item" v-for="item in caseNodes" :key="item.type"
+                        @mousedown="addNode(item.type, { text: item.label })">
+                        <div class="node-item-icon">
+                            <SvgIcon :iconClass="item.icon" />
+                        </div>
+                        <div class="node-item-label">{{ item.label }}</div>
+                    </div>
+                </div>
+            </el-collapse-item>
             
             <el-collapse-item title="其他节点" name="others">
                 <div class="node-list">
@@ -56,8 +68,10 @@ const activeNames = ref(['tasks']);
 const allNodes = [
     { type: 'cmmn:task', label: '基础任务', icon: 'bpmn-icon-script-task', category: 'tasks' },
     { type: 'cmmn:humanTask', label: '人工任务', icon: 'bpmn-icon-user-task', category: 'tasks' },
+    { type: 'cmmn:InfoReportTask', label: '信息通报任务', icon: 'bpmn-icon-message-throw', category: 'tasks' },
     // { type: 'cmmn:caseTask', label: '案例任务', icon: 'bpmn-icon-service-task', category: 'tasks' },
     { type: 'cmmn:stage', label: '阶段', icon: 'bpmn-icon-subprocess-expanded', category: 'stages' },
+    { type: 'cmmn:casePlanModel', label: '案例', icon: 'bpmn-icon-subprocess-expanded', category: 'cases' },
     { type: 'dynamic-group', label: '分组', icon: 'bpmn-icon-group', category: 'others' },
     // { type: 'cmmn:milestone', label: '里程碑', icon: 'bpmn-icon-group', category: 'others' },
     // { type: 'EventListener', label: '事件监听', icon: Bell, category: 'others' },
@@ -69,13 +83,14 @@ const allNodes = [
 const taskNodes = computed(() => allNodes.filter(node => node.category === 'tasks'));
 const stageNodes = computed(() => allNodes.filter(node => node.category === 'stages'));
 const otherNodes = computed(() => allNodes.filter(node => node.category === 'others'));
+const caseNodes = computed(() => allNodes.filter(node => node.category === 'cases'));
 
 function addNode(type: string, { text, properties }: any) {
     props.lf!.dnd.startDrag({
         type,
         text: text,
-        width: 200,
-        height: 200,
+        // width: 200, // 各自默认的宽高在节点模型中设置
+        // height: 200,
         properties,
     });
 }

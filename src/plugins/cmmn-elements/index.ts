@@ -10,6 +10,7 @@
 // import { ExitCriterion } from './presets/nodes/ExitCriterion'
 import { registerTaskNodes } from './presets/nodes/Task';
 import { registerStageNodes } from './presets/nodes/Stage/index';
+import { registerCaseNodes } from './presets/nodes/Case/index';
 import { registerEdge } from './presets/edges';
 
 // CMMN规范中的节点类型枚举
@@ -33,6 +34,7 @@ export class CmmnElements {
   constructor({ lf }: any) {
     registerTaskNodes(lf);
     registerStageNodes(lf);
+    registerCaseNodes(lf);
     registerEdge(lf);
   }
 }

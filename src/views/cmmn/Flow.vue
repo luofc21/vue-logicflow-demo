@@ -35,7 +35,16 @@ import { CmmnAdapter } from "@plugins/cmmn-elements-adapter";
 // import { StageGroupPlugin } from '../../plugins/cmmn-elements/StageGroupPlugin';
 
 LogicFlow.use(CmmnElements);
-LogicFlow.use(CmmnAdapter);
+LogicFlow.use(CmmnAdapter, {
+  props: {
+    // 当没有casePlanModel节点时也允许导出，用于开发测试
+    suppressWarning: false,
+    // 处理警告信息的回调函数
+    onWarning: (warningMessage) => {
+      ElMessage.warning(warningMessage);
+    }
+  }
+});
 LogicFlow.use(DynamicGroup);
 // LogicFlow.use(StageGroupPlugin);
 
@@ -117,6 +126,15 @@ const initEvent = (lf) => {
     showPropertyPanel.value = true;
   })
 
+  // 监听casePlanModel:edit事件，当用户编辑Case Plan Model节点时触发
+  lf.on('casePlanModel:edit', ({ nodeId, nodeData: casePlanData }) => {
+    // 获取当前被编辑的casePlanModel节点模型
+    currentNode.value = lf.getNodeModelById(nodeId);
+    console.log('case plan model edit ===>', nodeId, casePlanData, currentNode.value);
+    // 显示属性面板
+    showPropertyPanel.value = true;
+  })
+
   // 监听task:edit事件，当用户编辑任务节点时触发
   lf.on('task:edit', ({ nodeId, nodeData: taskData }) => {
     console.log('edit taskData', nodeId, taskData);
@@ -181,6 +199,19 @@ const hidePropertyPanel = () => {
   currentNode.value = null
 };
 
+// const handleNodeClick = (data) => {
+//   console.log('handleNodeClick', data)
+//   currentNode.value = data
+//   showPropertyPanel.value = true
+// }
+
+// 保存节点属性
+const handleSave = (newNodeData) => {
+  if (currentNode.value && !!newNodeData.name) {
+    currentNode.value.updateText(newNodeData.name);
+  }
+}
+
 // const hideJudgementPanel = () => {
 //   showJudgementPanel.value = false;
 // };
@@ -234,19 +265,6 @@ onMounted(() => {
   // lf.value.on('node:click', handleNodeClick)
   // initDefaultCmmnProcess()
 });
-
-// const handleNodeClick = (data) => {
-//   console.log('handleNodeClick', data)
-//   currentNode.value = data
-//   showPropertyPanel.value = true
-// }
-
-// 保存节点属性
-const handleSave = (newNodeData) => {
-  if (currentNode.value && !!newNodeData.name) {
-    currentNode.value.updateText(newNodeData.name);
-  }
-}
 </script>
 
 <style scoped>

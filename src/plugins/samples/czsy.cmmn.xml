@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cmmn:definitions xmlns:cmmn="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flowable="http://flowable.org/cmmn" xmlns:cmmndi="http://www.omg.org/spec/CMMN/20151109/CMMNDI" xmlns:dc="http://www.omg.org/spec/CMMN/20151109/DC" xmlns:di="http://www.omg.org/spec/CMMN/20151109/DI" targetNamespace="http://www.flowable.org/casedef" exporter="Flowable Open Source Modeler" exporterVersion="6.8.1">	
+  <cmmn:case id="Case_1743669601234" name="车站水淹预案" flowable:initiatorVariableName="initiator">	
+    <cmmn:documentation>车站水淹预案</cmmn:documentation>	
+    <cmmn:casePlanModel id="CasePlanModel_1743669601234" name="车站水淹预案" flowable:formFieldValidation="true" width="960" height="840" children="['dd9ef429-39f0-40e3-91c5-77c6bbc47fce']" isCollapsed="false">	
+        <cmmn:planItem id="PlanItem_dd9ef429-39f0-40e3-91c5-77c6bbc47fce" definitionRef="Definition_dd9ef429-39f0-40e3-91c5-77c6bbc47fce" />	
+        <cmmn:stage id="Definition_dd9ef429-39f0-40e3-91c5-77c6bbc47fce" name="积水达一级警戒线" type="cmmn:stage" width="400" height="300" children="['Activity_d4ce580']" isCollapsed="false">	
+            <cmmn:planItem id="PlanItem_Activity_d4ce580" definitionRef="Definition_Activity_d4ce580" />	
+            <cmmn:task id="Definition_Activity_d4ce580" name="对外发布受影响出入口信息" type="cmmn:task" flowable:type="java" flowable:class="com.pci.hjmos.process.engine.planItem.MyPlanItemJavaDelegate" width="100" height="80" args="[]" needRerender="1743669583105">	
+              <cmmn:extensionElements>	
+                  <flowable:field name="taskType">	
+                    <flowable:string>	
+                      <![CDATA[auto]]>	
+                    </flowable:string>	
+                  </flowable:field>	
+                  <flowable:field name="requestUrl">	
+                    <flowable:string>	
+                      <![CDATA[http://dev-k8s.pcitech.com:30780/nec/plan/get/process?eventCode=dkl03]]>	
+                    </flowable:string>	
+                  </flowable:field>	
+                  <flowable:field name="requestHeaders">	
+                    <flowable:string>	
+                      <![CDATA[{"Authorization": "Basic MTAxOjEyMzQ1Ng==","ID-Token": "32919556-4765-40d9-81f0-f20698dc7381"}]]>	
+                    </flowable:string>	
+                  </flowable:field>	
+                  <flowable:field name="requestMethod">	
+                    <flowable:string>	
+                      <![CDATA[post]]>	
+                    </flowable:string>	
+                  </flowable:field>	
+                  <flowable:field name="topic">	
+                    <flowable:string>	
+                      <![CDATA[task]]>	
+                    </flowable:string>	
+                  </flowable:field>	
+                  <flowable:field name="massage">	
+                    <flowable:string>	
+                      <![CDATA["{\"code\":0,\"message\":\"ok\",\"data\":{\"pointList\":[{\"name\":\"启动线网一级客控\",\"index\":0,\"active\":1,\"opsItemList\":[{\"auto\":true,\"decision\":\"2025-03-17 20:47:18 已向集团领导通报\",\"opsItemGroup\":\"信息通报\",\"index\":0,\"completeTime\":\"2025-03-17 20:47:18\",\"showStatus\":true,\"decisionTemplate\":\"@time 已向集团领导通报\",\"statusTip\":\"启动则触发短信通报\",\"delay\":2,\"name\":\"总调\",\"buttonContent\":\"\",\"switchValue\":0,\"action\":\"处置信息向集团领导通报（戴*军，158****1486）\",\"decisionType\":1,\"group\":\"自动\",\"status\":3}],\"status\":0}]}}"]]>	
+                    </flowable:string>	
+                  </flowable:field>	
+                  <flowable:field name="taskName">	
+                    <flowable:string>	
+                      <![CDATA[对外发布受影响出入口信息]]>	
+                    </flowable:string>	
+                  </flowable:field>	
+                  <flowable:field name="taskId">	
+                    <flowable:string>	
+                      <![CDATA[task_AKbSbEMu]]>	
+                    </flowable:string>	
+                  </flowable:field>	
+              </cmmn:extensionElements>	
+            </cmmn:task>	
+        </cmmn:stage>	
+    </cmmn:casePlanModel>	
+  </cmmn:case>	
+  <cmmndi:CMMNDI>	
+    <cmmndi:CMMNDiagram id="CMMNDiagram_CasePlanModel_1743669601234">	
+      <cmmndi:Size height="800" width="1200" />	
+        <cmmndi:CMMNShape id="CMMNShape_casePlanModel" cmmnElementRef="CasePlanModel_1743669601234">	
+          <dc:Bounds height="1124.0000010869721" width="720.4999960834326" x="30.000000422651148" y="0" />	
+          <cmmndi:CMMNLabel />	
+        </cmmndi:CMMNShape>	
+        <cmmndi:CMMNShape id="Shape_c9be3934-cf45-4d57-9d8f-109b78affc69" cmmnElementRef="PlanItem_c9be3934-cf45-4d57-9d8f-109b78affc69">	
+          <dc:Bounds x="767" y="569.666666507721" width="100" height="80" />	
+          <cmmndi:CMMNLabel />	
+        </cmmndi:CMMNShape>	
+        <cmmndi:CMMNShape id="Shape_dd9ef429-39f0-40e3-91c5-77c6bbc47fce" cmmnElementRef="PlanItem_dd9ef429-39f0-40e3-91c5-77c6bbc47fce">	
+          <dc:Bounds x="552" y="425.66666650772095" width="100" height="80" />	
+          <cmmndi:CMMNLabel />	
+        </cmmndi:CMMNShape>	
+        <cmmndi:CMMNShape id="Shape_Activity_d4ce580" cmmnElementRef="PlanItem_Activity_d4ce580">	
+          <dc:Bounds x="455" y="400.66666650772095" width="100" height="80" />	
+          <cmmndi:CMMNLabel />	
+        </cmmndi:CMMNShape>	
+    </cmmndi:CMMNDiagram>	
+  </cmmndi:CMMNDI>	
+</cmmn:definitions>

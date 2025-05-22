@@ -16,6 +16,7 @@ import { TaskNodeFactory } from './task';
 import { BaseTask } from './BaseTask';
 import { HumanTask } from './HumanTask';
 import { Milestone } from './Milestone';
+import { InfoReportTask } from './InfoReportTask';
 // import { SubProcessFactory } from './subProcess';
 
 function boundaryEvent(lf: any) {
@@ -149,4 +150,7 @@ export function registerTaskNodes(lf: LogicFlow) {
 
   // 注册基础任务节点
   lf.register(BaseTask);
+  
+  // 注册信息通报任务节点
+  lf.register(InfoReportTask);
 }

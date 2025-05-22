@@ -119,8 +119,8 @@ export function toXml(obj: any, name: string, depth: number) {
     else {
         // 特殊处理flowable:string标签中的CDATA内容，防止内容被转义
         if (name === 'flowable:string' && obj) {
-            // 使用更标准的缩进格式
-            str += `${prefix}<${name}>${prefix}  <![CDATA[${String(obj)}]]>${prefix}</${name}>`;
+            // 使用更标准的缩进格式，匹配示例文件中的格式
+            str += `${prefix}<${name}>${prefix}  <![CDATA[${String(obj).trim()}]]>${prefix}</${name}>`;
         } else {
             str += `${prefix}<${name}>${String(obj)}</${name}>`;
         }
@@ -133,10 +133,37 @@ export function toXml(obj: any, name: string, depth: number) {
 
 /**
  * 将 LogicFlow 数据 JSON 转换为 XML 字符串
+ * @param json 要转换的JSON对象
+ * @param removePrefix 是否移除cmmn前缀
  */
-export function lfJson2Xml(json: any): string {
+export function lfJson2Xml(json: any, removePrefix: boolean = false): string {
     if (!json) return '';
     
+    // 如果需要移除cmmn前缀
+    if (removePrefix && json['cmmn:definitions']) {
+        // 创建一个新的对象，将所有的cmmn:前缀去掉
+        const newJson: any = { definitions: {} };
+        
+        // 复制definitions的属性
+        const definitions = json['cmmn:definitions'];
+        for (const key in definitions) {
+            if (key.startsWith('-')) {
+                // 保留属性前缀
+                newJson.definitions[key] = definitions[key];
+            } else if (key.startsWith('cmmn:')) {
+                // 去掉cmmn:前缀
+                const newKey = key.replace('cmmn:', '');
+                newJson.definitions[newKey] = definitions[key];
+            } else {
+                // 保留其他前缀
+                newJson.definitions[key] = definitions[key];
+            }
+        }
+        
+        return `<?xml version="1.0" encoding="UTF-8"?>\n${toXml(newJson.definitions, 'definitions', 0)}`;
+    }
+    
+    // 正常处理，保留cmmn:前缀
     // 确保使用 cmmn:definitions 作为根节点
     if (json['cmmn:definitions']) {
         return `<?xml version="1.0" encoding="UTF-8"?>\n${toXml(json['cmmn:definitions'], 'cmmn:definitions', 0)}`;

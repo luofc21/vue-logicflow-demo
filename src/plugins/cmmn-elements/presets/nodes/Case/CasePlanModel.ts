@@ -1,9 +1,9 @@
 import LogicFlow, { h } from '@logicflow/core';
 import { DynamicGroupNodeModel, DynamicGroupNode } from '@logicflow/extension';
 
-// 定义Stage节点模型
-class StageModel extends DynamicGroupNodeModel {
-    static extendKey = 'StageModel';
+// 定义CasePlanModel节点模型
+class CasePlanModelModel extends DynamicGroupNodeModel {
+    static extendKey = 'CasePlanModelModel';
 
     constructor(data: any, graphModel: any) {
         super({
@@ -12,8 +12,8 @@ class StageModel extends DynamicGroupNodeModel {
             radius: 5,
             isCollapsed: false,
             collapsible: true,
-            collapsedWidth: 400,
-            collapsedHeight: 80
+            collapsedWidth: 600,
+            collapsedHeight: 100
         }, graphModel);
     }
 
@@ -22,24 +22,14 @@ class StageModel extends DynamicGroupNodeModel {
         // 设置默认文本
         this.text = {
             ...this.text,
-            value: data.text?.value || 'Stage',
+            value: data.text?.value || 'Case Plan Model',
             x: 0, // 水平居中
             y: -this.height / 2 + 20, // 顶部居中
             draggable: false
         };
-        this.width = this.data?.width || 400;
-        this.height = this.data?.height || 300;
+        this.width = this.data?.width || 960;
+        this.height = this.data?.height || 840;
     }
-
-    // setProperties(properties: Record<string, any>): void {
-    //     // 设置默认文本
-    //     if (properties.text?.vlaue) {
-    //         this.text = {
-    //             ...this.text,
-    //             value: properties.text?.value,
-    //         };
-    //     }
-    // }
 
     // 获取折叠状态
     getCollapseState() {
@@ -49,13 +39,12 @@ class StageModel extends DynamicGroupNodeModel {
     // 触发编辑事件
     handleEdit() {
         // 触发自定义事件
-        console.log('edit data===>', this.getData());
-        this.graphModel.eventCenter.emit('stage:edit', { nodeId: this.id, nodeData: this.getData() }); // 父组件的getData方法
+        this.graphModel.eventCenter.emit('casePlanModel:edit', { nodeId: this.id, nodeData: this.getData() });
     }
 }
 
-// 定义Stage节点视图
-class StageView extends DynamicGroupNode {
+// 定义CasePlanModel节点视图
+class CasePlanModelView extends DynamicGroupNode {
     getShape() {
         const { x, y, width, height, radius } = this.props.model;
         const style = this.getNodeStyle();
@@ -82,7 +71,7 @@ class StageView extends DynamicGroupNode {
                 height: 40,
                 rx: radius,
                 ry: radius,
-                fill: '#f0f0f0',
+                fill: '#e6f7ff',
                 stroke: 'none'
             }),
 
@@ -151,23 +140,23 @@ class StageView extends DynamicGroupNode {
                 fontWeight: 'bold',
                 textAnchor: 'middle',
                 dominantBaseline: 'middle'
-            }, this.props.model.text.value || 'Stage')
+            }, this.props.model.text.value || 'Case Plan Model')
         ]);
     }
 
     getNodeStyle() {
         const { model } = this.props;
         return {
-            fill: '#f8f8f8',
-            stroke: model.isSelected ? '#3a84ff' : '#909399',
+            fill: '#f0f7ff',
+            stroke: model.isSelected ? '#1890ff' : '#91d5ff',
             strokeWidth: model.isSelected ? 2 : 1,
             strokeDasharray: '4, 4'
         };
     }
 }
 
-export const Stage = {
-    type: 'cmmn:stage',
-    view: StageView,
-    model: StageModel
+export const CasePlanModel = {
+    type: 'cmmn:casePlanModel',
+    view: CasePlanModelView,
+    model: CasePlanModelModel
 };
